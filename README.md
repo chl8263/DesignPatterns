@@ -183,7 +183,15 @@ public class Duck {
 
     private static final Logger logger = LoggerFactory.getLogger(Duck.class);
 
-    QuackBehavior quackBehavior = new Quack();
+    private QuackBehavior quackBehavior;
+
+    public Duck(){
+        quackBehavior = new Quack();
+    }
+
+    public void setQuackBehavior(QuackBehavior quackBehavior) {
+        this.quackBehavior = quackBehavior;
+    }
 
     public void swim(){
         logger.info("수영하는중~");
@@ -194,9 +202,35 @@ public class Duck {
         this.quackBehavior.quack();
     }
 }
+
 ~~~
 위의 코드에서 interface타입의 맴버 변수를 생성했고 default를 Quack class로 주입했다.
 
 이제 dispaly 메서드에서 quackBehavior.quack(); 을 어떤 class 인지 상관없이 불러 쓰면 된다.
 
-즉 
+즉, 소리나는 행위를 다른 class에 위임을 한다는 말이다.
+
+장난감 오리를 만들때 어떻게 하면 될까.
+
+~~~
+Duck duck = new ToyDuck();
+        
+duck.setQuackBehavior(new MuteQuack());
+
+duck.display();
+~~~
+
+위와 같이 setQuackBehavior 를 통해 MuteQuack 를 주입한다. 
+
+~~~
+00:03:44.384 [main] INFO strategy.ToyDuck - 장난감 수영~
+00:03:44.386 [main] INFO strategy.quack.MuteQuack - 조용~
+
+Process finished with exit code 0
+~~~
+
+결과를 위와 같이 잘 나오게 된다.
+
+Strategy pattern 은 간략히 말해 어떤 동작을하는 로직을 정의하고 이것들을 하나로 묶어(캡슐화) 관리하도록 하는 패턴이다.
+
+새로운 로직을 추가하거나 변경할때 객체의 종류 수 만큼 반복적으로 수정 반영할 필요없이 단한번에 반영할 수 있다.
