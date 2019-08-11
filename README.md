@@ -1,5 +1,5 @@
 ## 목차
-1. trategy pattern
+1. Strategy pattern
 2. 옵저버패턴
 3. 데코레이터 패턴
 4. 팩토리 패턴
@@ -11,4 +11,6 @@
 10. 스테이트 패턴
 11. 프록시 패턴
 12. 컴파운드 패턴
+---
+### 1. Strategy pattern
 
