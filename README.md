@@ -1,6 +1,6 @@
 ## 목차
 1. Strategy pattern
-2. 옵저버패턴
+2. Observer pattern
 3. 데코레이터 패턴
 4. 팩토리 패턴
 5. 싱글턴 패턴
@@ -233,3 +233,6 @@ Process finished with exit code 0
 
 >Strategy pattern 은 간략히 말해 어떤 동작을하는 로직을 정의하고 이것들을 하나로 묶어(캡슐화) 관리하도록 하는 패턴이다.
 >새로운 로직을 추가하거나 변경할때 객체의 종류 수 만큼 반복적으로 수정 반영할 필요없이 단한번에 반영할 수 있다.
+
+
+### 2. Observer pattern
