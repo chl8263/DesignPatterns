@@ -1,5 +1,5 @@
 ## 목차
-[1. Strategy pattern] (https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/strategy/strategyPattern.md)
+[1. Strategy pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/strategy/strategyPattern.md)
 
 
 2. Observer pattern
