@@ -9,7 +9,9 @@ one to many 의 의존성을 가진다.
 
 위의 그림과 같이 observer pattern 에는 크게 두가지로 나뉜다. 
 
-publisher  : 여러개의 subscriber 를 가질 수 있으며 데이터를 발행하는 주체.
+>publisher  : 여러개의 subscriber 를 가질 수 있으며 데이터를 발행하는 주체, Subject 라고도 한다.
+>subscriber : 한개의 publisher 를 가질 수 있으며 publisher 가 발행한 데이터를 수신받는 주체, Observer 라고도 한다 .
 
-subscriber : 한개의 publisher 를 가질 수 있으며 publisher 가 발행한 데이터를 수신받는 주체.
+observer pattern 의 class 다이어그램과 설명은 아래 그림과 같다.
 
+![base_archi](/src/main/md/observer/img/ob2.PNG)
