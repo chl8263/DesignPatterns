@@ -1,5 +1,9 @@
 ## 목차
 1. Strategy pattern
+
+<https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/strategy/strategyPattern.md>
+
+
 2. Observer pattern
 3. 데코레이터 패턴
 4. 팩토리 패턴
