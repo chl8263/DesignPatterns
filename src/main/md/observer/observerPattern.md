@@ -6,4 +6,4 @@
 one to many 의 의존성을 가진다.
 
 
-![architecture](.src/main/md/observer/img/ob1.png)
+![architecture](.src/main/md/observer/img/ob1.PNG)
