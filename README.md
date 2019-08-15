@@ -1,3 +1,8 @@
+# Design pattern
+
+> Design pattern 공부 내용을 코드와 함께 정리하는 저장소입니다.
+
+
 ## 목차
 [1. Strategy pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/strategy/strategyPattern.md)
 
@@ -15,7 +20,3 @@
 10. 스테이트 패턴
 11. 프록시 패턴
 12. 컴파운드 패턴
----
-
-
-### 2. Observer pattern
