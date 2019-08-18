@@ -51,8 +51,8 @@ public interface Subject {
 ~~~
 
 ~~~
-public interface Observer {
-    public void update(float temp , float humidity , float pressure);   // 기상정보를 수신할 상태 값들을 가지는 메소드
+public interface CustomObserver {
+    public void update(float temp , float humidity , float pressure);
 }
 ~~~
 
@@ -62,4 +62,45 @@ public interface DisplayElement {
 }
 ~~~
 
+이제 위의 3가지 interface 를 가지고 class를 구현해 보겠다.
+
+우선 subject의 기능을 해야하는 기상 장치 이다.
+
+~~~
+public class WeatherData implements Subject {
+
+    private ArrayList<CustomObserver> customObservers;      // 옵저버들을 저장하는 변수
+    private float temperature;                              // 기상 데이터
+    private float humidity;                                 // 기상 데이터
+    private float pressure;                                 // 기상 데이터
+
+    public WeatherData(){
+        customObservers = new ArrayList();                  // 생성자에서 초기화
+    }
+
+    @Override
+    public void registerObserver(CustomObserver o) {
+        customObservers.add(o);                             // 옵저버 등록
+    }
+
+    @Override
+    public void removeObserver(CustomObserver o) {
+        int index = customObservers.indexOf(o);             
+
+        if(index >= 0)
+            customObservers.remove(index);                  // 옵저버 해지                  
+    }
+
+    @Override
+    public void notifyObserver(CustomObserver o) {
+        for(CustomObserver observer : customObservers){
+            observer.update(this.temperature , this.humidity , this.pressure);  // 옵저버 알림
+        }
+    }
+}
+~~~
+
+설명은 코드의 주석으로 대체한다.
+
+다음은 디스플레이 장치를 만들어 보자.
 
