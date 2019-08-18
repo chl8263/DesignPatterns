@@ -32,3 +32,35 @@ observer pattern 은 느슨하게 결합되어 있는 객체 디자인을 제공
 
 객체 사이의 상호의존성을 최소화할 수 있기 때문이다.
 
+### 예제 (가상 스테이션 구현하기)
+
+예제로 기상 스테이션을 구현하는 과정을 앞으로 작성 하겠다.
+
+기상 데이터를 수집하는 어떤 장치에서 기상데이터를 수집하여 화면에 나타내는 어플리케이션을 구현해 보겠다.
+
+기상 데이터를 수집하는 장치는 Subject 가 되겠고 , 이를 수신하여 화면에 나타내는 주체는 Observer 가 되겠다. 
+
+먼저, interface 부터 구현해 보겠다. 
+
+~~~
+public interface Subject {
+    public void regsiterObserver(Observer o);  // 옵저버 등록
+    public void removeObserver(Observer o);    // 옵저버 제거
+    public void notifyObserver(Observer o);    // 옵저버들에게 상태 전송
+}
+~~~
+
+~~~
+public interface Observer {
+    public void update(float temp , float humidity , float pressure);   // 기상정보를 수신할 상태 값들을 가지는 메소드
+}
+~~~
+
+~~~
+public interface DisplayElement {
+    public void display();        // 화면에 표시해야하는 경우 사용할 메소드
+}
+~~~
+
+
+subject interface 는 총 3가지로 나뉜다. 
