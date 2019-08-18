@@ -63,4 +63,3 @@ public interface DisplayElement {
 ~~~
 
 
-subject interface 는 총 3가지로 나뉜다. 
