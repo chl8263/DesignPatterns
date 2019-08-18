@@ -1,5 +1,5 @@
 package observer.interfaces;
 
-public interface Observer {
+public interface CustomObserver {
     public void update(float temp , float humidity , float pressure);
 }
