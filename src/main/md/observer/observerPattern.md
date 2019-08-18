@@ -32,3 +32,75 @@ observer pattern 은 느슨하게 결합되어 있는 객체 디자인을 제공
 
 객체 사이의 상호의존성을 최소화할 수 있기 때문이다.
 
+### 예제 (가상 스테이션 구현하기)
+
+예제로 기상 스테이션을 구현하는 과정을 앞으로 작성 하겠다.
+
+기상 데이터를 수집하는 어떤 장치에서 기상데이터를 수집하여 화면에 나타내는 어플리케이션을 구현해 보겠다.
+
+기상 데이터를 수집하는 장치는 Subject 가 되겠고 , 이를 수신하여 화면에 나타내는 주체는 Observer 가 되겠다. 
+
+먼저, interface 부터 구현해 보겠다. 
+
+~~~
+public interface Subject {
+    public void regsiterObserver(Observer o);  // 옵저버 등록
+    public void removeObserver(Observer o);    // 옵저버 제거
+    public void notifyObserver(Observer o);    // 옵저버들에게 상태 전송
+}
+~~~
+
+~~~
+public interface CustomObserver {
+    public void update(float temp , float humidity , float pressure);
+}
+~~~
+
+~~~
+public interface DisplayElement {
+    public void display();        // 화면에 표시해야하는 경우 사용할 메소드
+}
+~~~
+
+이제 위의 3가지 interface 를 가지고 class를 구현해 보겠다.
+
+우선 subject의 기능을 해야하는 기상 장치 이다.
+
+~~~
+public class WeatherData implements Subject {
+
+    private ArrayList<CustomObserver> customObservers;      // 옵저버들을 저장하는 변수
+    private float temperature;                              // 기상 데이터
+    private float humidity;                                 // 기상 데이터
+    private float pressure;                                 // 기상 데이터
+
+    public WeatherData(){
+        customObservers = new ArrayList();                  // 생성자에서 초기화
+    }
+
+    @Override
+    public void registerObserver(CustomObserver o) {
+        customObservers.add(o);                             // 옵저버 등록
+    }
+
+    @Override
+    public void removeObserver(CustomObserver o) {
+        int index = customObservers.indexOf(o);             
+
+        if(index >= 0)
+            customObservers.remove(index);                  // 옵저버 해지                  
+    }
+
+    @Override
+    public void notifyObserver(CustomObserver o) {
+        for(CustomObserver observer : customObservers){
+            observer.update(this.temperature , this.humidity , this.pressure);  // 옵저버 알림
+        }
+    }
+}
+~~~
+
+설명은 코드의 주석으로 대체한다.
+
+다음은 디스플레이 장치를 만들어 보자.
+
