@@ -78,6 +78,18 @@ public class WeatherData implements Subject {
         customObservers = new ArrayList();                  // 생성자에서 초기화
     }
 
+    public void setMesurements(float temperature , float humidity , float pressure){    // 기상데이터 셋팅
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        
+        mesurementChange(); // 기상데이터가 변경호출
+    }
+
+    public void mesurementChange(){
+        notifyObserver();   // 기상데이터 변경시 옵저버들에게 알림
+    }
+
     @Override
     public void registerObserver(CustomObserver o) {
         customObservers.add(o);                             // 옵저버 등록
@@ -85,19 +97,20 @@ public class WeatherData implements Subject {
 
     @Override
     public void removeObserver(CustomObserver o) {
-        int index = customObservers.indexOf(o);             
+        int index = customObservers.indexOf(o);
 
         if(index >= 0)
-            customObservers.remove(index);                  // 옵저버 해지                  
+            customObservers.remove(index);                  // 옵저버 해지
     }
 
     @Override
-    public void notifyObserver(CustomObserver o) {
+    public void notifyObserver() {
         for(CustomObserver observer : customObservers){
             observer.update(this.temperature , this.humidity , this.pressure);  // 옵저버 알림
         }
     }
 }
+
 ~~~
 
 설명은 코드의 주석으로 대체한다.
@@ -135,3 +148,42 @@ public class ConditionDisplay implements CustomObserver , DisplayElement {
 }
 ~~~
 
+이제 기상스테이션을 만들어 지금까지의 작업들을 연동시켜 보겠다.
+
+~~~
+public class WeatherStation {
+    public WeatherStation(){
+        run();
+    }
+
+    public void run(){
+        WeatherData weatherData = new WeatherData();    // 주제가 되는 객체
+
+        ConditionDisplay display_1 = new ConditionDisplay(weatherData);     // 옵저버 생성
+        ConditionDisplay display_2 = new ConditionDisplay(weatherData);     // 옵저버 생성
+        ConditionDisplay display_3 = new ConditionDisplay(weatherData);     // 옵저버 생성
+
+        weatherData.setMesurements(12,15,12);       // 데이터 변경
+        weatherData.setMesurements(100,123,523);    // 데이터 변경
+        weatherData.setMesurements(3000,1231,9372); // 데이터 변경
+    }
+}
+~~~
+
+옵저버를 3개를 만들고 데이터를 변경하면 데이터가 출력이 되어야 한다.
+
+~~~
+00:05:53.310 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 12.0 습도 -> 15.0 압력 -> 12.0
+00:05:53.312 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 12.0 습도 -> 15.0 압력 -> 12.0
+00:05:53.312 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 12.0 습도 -> 15.0 압력 -> 12.0
+00:05:53.313 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 100.0 습도 -> 123.0 압력 -> 523.0
+00:05:53.313 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 100.0 습도 -> 123.0 압력 -> 523.0
+00:05:53.313 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 100.0 습도 -> 123.0 압력 -> 523.0
+00:05:53.313 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 3000.0 습도 -> 1231.0 압력 -> 9372.0
+00:05:53.313 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 3000.0 습도 -> 1231.0 압력 -> 9372.0
+00:05:53.313 [main] INFO observer.ConditionDisplay - current conditions : 온도 -> 3000.0 습도 -> 1231.0 압력 -> 9372.0
+
+Process finished with exit code 0
+~~~
+
+잘 출력된 결과를 볼 수있다.
