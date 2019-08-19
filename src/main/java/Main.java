@@ -1,3 +1,4 @@
+import observer.WeatherStation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import strategy.Duck;
@@ -10,7 +11,7 @@ public class Main {
     public static void main(String [] args){
 
         Main main = new Main();
-        main.strategy();
+        main.observer();
     }
 
     private void strategy(){
@@ -19,5 +20,9 @@ public class Main {
         duck.setQuackBehavior(new MuteQuack());
 
         duck.display();
+    }
+
+    private void observer(){
+        new WeatherStation();
     }
 }

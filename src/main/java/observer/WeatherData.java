@@ -16,6 +16,18 @@ public class WeatherData implements Subject {
         customObservers = new ArrayList();                  // 생성자에서 초기화
     }
 
+    public void setMesurements(float temperature , float humidity , float pressure){    // 기상데이터 셋팅
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+
+        mesurementChange(); // 기상데이터가 변경호출
+    }
+
+    public void mesurementChange(){
+        notifyObserver();   // 기상데이터 변경시 옵저버들에게 알림
+    }
+
     @Override
     public void registerObserver(CustomObserver o) {
         customObservers.add(o);                             // 옵저버 등록
@@ -30,7 +42,7 @@ public class WeatherData implements Subject {
     }
 
     @Override
-    public void notifyObserver(CustomObserver o) {
+    public void notifyObserver() {
         for(CustomObserver observer : customObservers){
             observer.update(this.temperature , this.humidity , this.pressure);  // 옵저버 알림
         }
