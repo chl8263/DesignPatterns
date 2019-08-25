@@ -1,3 +1,4 @@
+import decorator.CoffeMachine;
 import observer.WeatherStation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ public class Main {
     public static void main(String [] args){
 
         Main main = new Main();
-        main.observer();
+        main.decorator();
     }
 
     private void strategy(){
@@ -24,5 +25,9 @@ public class Main {
 
     private void observer(){
         new WeatherStation();
+    }
+
+    private void decorator(){
+        new CoffeMachine();
     }
 }
