@@ -1,4 +1,4 @@
-## 2. Decorator pattern
+## 3. Decorator pattern
 
 ### 정의
 
@@ -173,5 +173,25 @@ public class Whip extends CondimentDecorator {
 ~~~
 
 ~~~
+public void run(){
+        Beverage beverage = new Espresso();
 
+        logger.info(beverage.getDescription() + " $" + beverage.cost());
+
+        Beverage beverage2 = new HouseBlend();
+        beverage2 = new Mocha(beverage2);
+        beverage2 = new Soy(beverage2);
+        beverage2 = new Whip(beverage2);
+
+        logger.info(beverage2.getDescription() + " $" + beverage2.cost());
+    }
+~~~
+
+결과는 다음과 같이 출력된다.
+
+~~~
+01:14:53.859 [main] INFO decorator.CoffeMachine - 에스프레소 $1.99
+01:14:53.861 [main] INFO decorator.CoffeMachine - 하우스 블랜드, 모카, 두유, 휘핑 $1.74
+
+Process finished with exit code 0
 ~~~
