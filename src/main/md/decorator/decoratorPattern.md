@@ -1,4 +1,4 @@
-## 2. Decorator pattern
+## 3. Decorator pattern
 
 ### 정의
 
@@ -38,7 +38,7 @@ __클래스 갯수가 폭발적으로 늘어나는 문제점이 생겼다.__
 
 그래서 인스턴스 변수와 수퍼 클래스 상속을 사용하여 추가사항을 관리해보도록 수정했다.
 
-![base](/src/main/md/decorator/img/deco4.PNG)
+7
 
 그렇다면 최종적으로 구현 코트는 이렇게 될 것이다.
 
@@ -86,3 +86,112 @@ __2. Mocha 객체로 장식한다.__
 __3. Whip 객체로 장식한다.__
 
 __4. cost() 메소드를 호출한다. 이떄 첨가물의 가격을 계산하는 일은 해당 객체들에게 위임한다.__
+
+![base](/src/main/md/decorator/img/deco5.PNG)
+
+새롭게 바꾼 위의 클래스 다이어그램을 토대로 코드를 구현해 보자.
+
+~~~
+public abstract class Beverage {
+    protected String description = "empty";
+
+    public String getDescription(){
+        return description;
+    }
+
+    public abstract double cost();
+}
+~~~
+
+~~~
+public abstract class CondimentDecorator extends Beverage {
+    public abstract String getDescription();
+}
+~~~
+
+~~~
+public class Mocha extends CondimentDecorator {
+
+    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
+
+    public Mocha(Beverage beverage){    // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
+        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
+    }                                   // 방식을 사용했다.
+
+    @Override
+    public String getDescription() {
+        return beverage.getDescription() + ", 모카";
+    }
+
+    @Override
+    public double cost() {
+        return .20 + beverage.cost();
+    }
+}
+~~~
+
+~~~
+public class Soy extends CondimentDecorator {
+
+    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
+
+    public Soy(Beverage beverage){      // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
+        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
+    }                                   // 방식을 사용했다.
+
+    @Override
+    public String getDescription() {
+        return beverage.getDescription() + ", 두유";
+    }
+
+    @Override
+    public double cost() {
+        return .50 + beverage.cost();
+    }
+}
+~~~
+
+~~~
+public class Whip extends CondimentDecorator {
+
+    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
+
+    public Whip(Beverage beverage){      // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
+        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
+    }                                   // 방식을 사용했다.
+
+    @Override
+    public String getDescription() {
+        return beverage.getDescription() + ", 휘핑";
+    }
+
+    @Override
+    public double cost() {
+        return .15 + beverage.cost();
+    }
+}
+~~~
+
+~~~
+public void run(){
+        Beverage beverage = new Espresso();
+
+        logger.info(beverage.getDescription() + " $" + beverage.cost());
+
+        Beverage beverage2 = new HouseBlend();
+        beverage2 = new Mocha(beverage2);
+        beverage2 = new Soy(beverage2);
+        beverage2 = new Whip(beverage2);
+
+        logger.info(beverage2.getDescription() + " $" + beverage2.cost());
+    }
+~~~
+
+결과는 다음과 같이 출력된다.
+
+~~~
+01:14:53.859 [main] INFO decorator.CoffeMachine - 에스프레소 $1.99
+01:14:53.861 [main] INFO decorator.CoffeMachine - 하우스 블랜드, 모카, 두유, 휘핑 $1.74
+
+Process finished with exit code 0
+~~~
