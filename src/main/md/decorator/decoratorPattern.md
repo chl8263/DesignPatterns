@@ -5,7 +5,7 @@
 > 객체의 추가적인 요건을 동적으로 첨가한다.
 > 테코레이터는 서브클래스를 만드는 것을 통해서 기능을 유연하게 확장할 수 있는 방법을 제공한다.
 
-![base](/src/main/md/decorator/img/dco1.PNG)
+![base](/src/main/md/decorator/img/deco1.PNG)
 
 __ConcreateComponent 에 새로운 행동을 동적으로 추가__ 할 수 있다.
 
