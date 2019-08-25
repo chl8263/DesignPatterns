@@ -27,7 +27,40 @@ __ConcteateDecorator에는 그 객체가 장식하고 있는 것(데코레이터
 카페 사업을 새로 시작한다고 가정해 보자.
 
 처음 사업을 시작할때 클래스는 다음과 같이 구성했다.
+
 ![base](/src/main/md/decorator/img/deco2.PNG)
 
 커피를 주문할때는 스팀이나 우유, 두유 모카 등등 을 추가할 수 있다. 그래서 아래의 클래스 다이어그램처럼 구현했다.
+
 ![base](/src/main/md/decorator/img/deco3.PNG)
+
+__클래스 갯수가 폭발적으로 늘어나는 문제점이 생겼다.__
+
+그래서 인스턴스 변수와 수퍼 클래스 상속을 사용하여 추가사항을 관리해보도록 수정했다.
+
+![base](/src/main/md/decorator/img/deco4.PNG)
+
+그렇다면 최종적으로 구현 코트는 이렇게 될 것이다.
+
+~~~
+public class Beverage{
+  // member
+  
+  public int cost(){
+    int totalCost = 0;
+    if (hasMilk) totalCost += milk;
+    if (hasSoy) totalCost += soy;
+    if (hasMoca) totalCost += moca;
+    if (hasWhip) totalCost += whip;
+    return totalCost;
+  }
+}
+
+public DarkRoast extands Beverage{
+  @Override
+  public int cost(){
+    return 1200 + super.cost();
+  }
+}
+~~~
+
