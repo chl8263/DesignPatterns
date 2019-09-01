@@ -42,7 +42,7 @@ __클래스 갯수가 폭발적으로 늘어나는 문제점이 생겼다.__
 
 그렇다면 최종적으로 구현 코트는 이렇게 될 것이다.
 
-~~~
+~~~java
 public class Beverage{
   // member
   
@@ -91,7 +91,7 @@ __4. cost() 메소드를 호출한다. 이떄 첨가물의 가격을 계산하�
 
 새롭게 바꾼 위의 클래스 다이어그램을 토대로 코드를 구현해 보자.
 
-~~~
+~~~java
 public abstract class Beverage {
     protected String description = "empty";
 
@@ -103,13 +103,13 @@ public abstract class Beverage {
 }
 ~~~
 
-~~~
+~~~java
 public abstract class CondimentDecorator extends Beverage {
     public abstract String getDescription();
 }
 ~~~
 
-~~~
+~~~java
 public class Mocha extends CondimentDecorator {
 
     Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
@@ -130,7 +130,7 @@ public class Mocha extends CondimentDecorator {
 }
 ~~~
 
-~~~
+~~~java
 public class Soy extends CondimentDecorator {
 
     Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
@@ -151,7 +151,7 @@ public class Soy extends CondimentDecorator {
 }
 ~~~
 
-~~~
+~~~java
 public class Whip extends CondimentDecorator {
 
     Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
@@ -172,7 +172,7 @@ public class Whip extends CondimentDecorator {
 }
 ~~~
 
-~~~
+~~~java
 public void run(){
         Beverage beverage = new Espresso();
 
