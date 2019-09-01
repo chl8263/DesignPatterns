@@ -25,3 +25,69 @@ if(a){
 
 물론 틀린 코드는 아니지만, 이런 코드가 존재한다는 것은 뭔가 변경하거나 확장해야 할 때 코드를 다시 확인하고 추가 또는 제거해야 하는 경우가 발생한다.
 
+즉, __변화에 닫혀있는__ 코드인 것이다.
+
+그렇다면 어떻게 코드를 구성해야 할까? 아래의 예제를 보자.
+
+내가 피자 가게를 운영하고 피자판매를 위한 소프트 웨어를 만들었다.
+
+~~~java
+public orderPizza(){
+  Pizza pizza = new Pizza();
+  
+  pizza.prepare();
+  pizza.bake();
+  pizza.cut();
+  pizza.box();
+  
+  return pizza;
+}
+~~~
+
+위의 코드는 피자를 생성하기위해 준비하고, 굽고 , 자르고, 박스에 포장하여 반환하는 코드이다.
+
+하지만 피자의 종류는 한가지만 있는것이 아니기 때문에 분기문을 추가하였다.
+
+~~~java
+public orderPizza(String type){
+  Pizza pizza;
+  
+  if(type.equals("cheese")){
+    pizza = new CheesePizza();
+  }else if(type.equals("potato")){
+    pizza = new PotatoPizza();
+  }else if(type.equals("pepperoni")){
+    pizza = new PepperoniPizza();
+  }
+  
+  pizza.prepare();
+  pizza.bake();
+  pizza.cut();
+  pizza.box();
+  
+  return pizza;
+}
+~~~
+
+가게를 운영하던중 신메뉴가 출시되고 인기없는 Potato 피자는 제외하기로 하였다.
+
+~~~java
+public orderPizza(String type){
+  Pizza pizza;
+  
+  if(type.equals("cheese")){
+    pizza = new CheesePizza();
+  }~~~else if(type.equals("potato")){~~~
+    ~~~pizza = new PotatoPizza();~~~
+  }else if(type.equals("pepperoni")){
+    pizza = new PepperoniPizza();
+  }
+  
+  pizza.prepare();
+  pizza.bake();
+  pizza.cut();
+  pizza.box();
+  
+  return pizza;
+}
+~~~
