@@ -77,10 +77,12 @@ public orderPizza(String type){
   
   if(type.equals("cheese")){
     pizza = new CheesePizza();
-  }~~~else if(type.equals("potato")){~~~
-    ~~~pizza = new PotatoPizza();~~~
+  }else if(type.equals("potato")){ // 제외
+    pizza = new PotatoPizza();  // 제외
   }else if(type.equals("pepperoni")){
     pizza = new PepperoniPizza();
+  }else if(type.equals("meat")){
+    pizza = new MeatPizza();
   }
   
   pizza.prepare();
@@ -91,3 +93,54 @@ public orderPizza(String type){
   return pizza;
 }
 ~~~
+
+위의 orderPizza 메소드의 문제가 되는 부분은 인스턴스를 생성하는 부분이다.
+
+__피자를 추가하고 삭제 해야할 경우가 생긴다면 매번 코드를 수정해야 한다.__
+
+pizza 인스턴스를 생성하는 부분을 캡슐화하여 따로빼서 개체를 만드는 일만 전담 하게 하였다.
+
+그리고 객체 생성을 처리하는 클래스를 __팩토리'__ 라고 부른다.
+~~~java
+public class SimplePizzaFactory{
+  public Pizza createPizza(String type){
+    Pizza pizza = new  Pizza();
+    if(type.equals("cheese")){
+      pizza = new CheesePizza();
+    }else if(type.equals("pepperoni")){
+      pizza = new PepperoniPizza();
+    }else if(type.equals("meat")){
+      pizza = new MeatPizza();
+    }
+    return pizza;
+  }
+}
+~~~
+
+이렇게 Factory를 따로 캡슐화를 시킴으로써 변경해야 하는 경우에 여기저기 다 들어가서 고칠필요가 없이 이 팩토리 메소드만 고치면 된다.
+
+~~~java
+public class PizzaStore{
+  
+  SimplePizzaFactory factory;
+  
+  public PizzaStore(SimplePizzaFactory factory){
+    this.factory = factory;
+  }
+  
+  public orderPizza(String type){
+    Pizza pizza = factory.createPizza("cheese");
+
+    pizza.prepare();
+    pizza.bake();
+    pizza.cut();
+    pizza.box();
+
+    return pizza;
+  }
+}
+~~~
+
+그리고 앞선 orderPizza 메소드는 위의코드와 같이 변경될 것이다.
+
+지금까지 했던 작업이 결코 팩토리 패턴은 아니다. 물론 팩토리를 사용하는 것이긴 하지만 어떻게 달라지는지 앞으로 보면 되겠다.
