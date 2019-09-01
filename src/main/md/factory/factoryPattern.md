@@ -53,10 +53,15 @@ public orderPizza(String type){
   Pizza pizza;
   
   if(type.equals("cheese")){
+  
     pizza = new CheesePizza();
+    
   }else if(type.equals("potato")){
+  
     pizza = new PotatoPizza();
+    
   }else if(type.equals("pepperoni")){
+  
     pizza = new PepperoniPizza();
   }
   
@@ -76,12 +81,19 @@ public orderPizza(String type){
   Pizza pizza;
   
   if(type.equals("cheese")){
+  
     pizza = new CheesePizza();
+    
   }else if(type.equals("potato")){ // 제외
+  
     pizza = new PotatoPizza();  // 제외
+    
   }else if(type.equals("pepperoni")){
+  
     pizza = new PepperoniPizza();
+    
   }else if(type.equals("meat")){
+  
     pizza = new MeatPizza();
   }
   
