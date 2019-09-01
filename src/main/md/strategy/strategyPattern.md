@@ -2,7 +2,7 @@
 
 디자인 패턴하면 가장 많이 사용하는 오리에 대한 제품을 만드는 어플리케이션을 만든다고 가정하자.
 
-~~~
+~~~java
 public class Duck {
 
     private static final Logger logger = LoggerFactory.getLogger(Duck.class);
@@ -33,7 +33,7 @@ public class Duck {
 
 만약 장난감 오리를 만들어야 한다면 어떻게 해야할까?
 
-~~~
+~~~java
 public class ToyDuck extends Duck {
 
     @Override
@@ -47,7 +47,7 @@ public class ToyDuck extends Duck {
 
 그리고 display 메서드에 장난감오리를 위한 적절한 행동을 위해 Duck class의 메소드들을 오버라이딩 하는것이 바람직 해보인다.
 
-~~~
+~~~java
 public class ToyDuck extends Duck {
     private static final Logger logger = LoggerFactory.getLogger(ToyDuck.class);
 
@@ -79,7 +79,7 @@ public class ToyDuck extends Duck {
 
 > interface 는 '할 수 있는' 의 의미이고 class 는 'A 는 B 이다' 의 의미이다.
 
-~~~
+~~~java
 public class ToyDuck extends Duck implements flayable , quackable{
     private static final Logger logger = LoggerFactory.getLogger(ToyDuck.class);
 
@@ -121,7 +121,7 @@ interface quackable{
 
 여기서 해결점은 소리내는 행위와 나는 행위를 통합 하여 코드를 재구성할 수 있다.
 
-~~~
+~~~java
 public interface QuackBehavior {
     public void quack();
 }
@@ -129,7 +129,7 @@ public interface QuackBehavior {
 
 QuackBehavior 라는 quack 메소드를 가지는 interface를 만들었다.
 
-~~~
+~~~java
 public class Quack implements QuackBehavior {
     private static final Logger logger = LoggerFactory.getLogger(Quack.class);
     @Override
@@ -143,7 +143,7 @@ public class Quack implements QuackBehavior {
 
 추가로 두가지 더 만들어 보자.
 
-~~~
+~~~java
 public class MuteQuack implements QuackBehavior {
     private static final Logger logger = LoggerFactory.getLogger(MuteQuack.class);
     @Override
@@ -152,7 +152,7 @@ public class MuteQuack implements QuackBehavior {
     }
 }
 ~~~
-~~~
+~~~java
 public class SuperQuack implements QuackBehavior {
     private static final Logger logger = LoggerFactory.getLogger(SuperQuack.class);
     @Override
@@ -164,7 +164,7 @@ public class SuperQuack implements QuackBehavior {
 
 그리고 이제 Duck class를 다음과 같이 고칠 수 있다.
 
-~~~
+~~~java
 public class Duck {
 
     private static final Logger logger = LoggerFactory.getLogger(Duck.class);
@@ -198,7 +198,7 @@ public class Duck {
 
 장난감 오리를 만들때 어떻게 하면 될까.
 
-~~~
+~~~java
 Duck duck = new ToyDuck();
         
 duck.setQuackBehavior(new MuteQuack());
