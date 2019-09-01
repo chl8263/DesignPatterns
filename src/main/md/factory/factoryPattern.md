@@ -218,6 +218,7 @@ PizzaStore 는 Pizza 가 어떤것인지 전혀 모르고 orderPizza 는 단지 
 
 예를들어 뉴욕스타일의 피자는 다음과 같이 만들면 되겠다.
 
+~~~java
 public class NYPizzaStore extends PizzaStore {
 
     @Override
@@ -241,6 +242,7 @@ public class NYPizzaStore extends PizzaStore {
         }
     }
 }
+~~~
 
 지금까지의 작업을 정리해보면, 인스턴스 클래스를 만드는 곳을 팩토리를 하나 생성하여 객체를 생성하는 방식에서
 
@@ -248,9 +250,14 @@ public class NYPizzaStore extends PizzaStore {
 
 그리고 서브클래스에서 어떤 클래스를 만들지 결경하게 함으로써 객체 생성을 캡슐화 했다. 그리고 이것이 바로 처음 기술했던 팩토리 메소드 패턴의 정의이다.
 
+
 이것을 디자인의 원칙중 __'의존성 뒤집기'__ 라고 한다. 의존성 뒤집기란
+
+
 > 추상화된 것에 의존하도록 만들어야하며. 구상 클래스에 의존하도록 만들지 않도록 해야한다.
 
+
 의존성 뒤집기 디자인의 원칙을 지키는데 몇가지 가이드 라인이 있는데 아래와 같다.
+
 
 __* 어떤변수에도 구상 클래스에 대한 레퍼런스를 저장하지 않는다.__
