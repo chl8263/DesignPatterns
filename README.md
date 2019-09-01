@@ -10,9 +10,9 @@
 
 [3. Decorator pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/decorator/decoratorPattern.md)
 
-[4. Factory pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/factory/factoryPattern.md)
+[4. FactoryMethod pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/factory/factoryPattern.md)
 
-[5. Single pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/singleton/singletonPattern.md)
+[5. Singleton pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/singleton/singletonPattern.md)
 
 [6. Command pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/command/commandPattern.md)
 
