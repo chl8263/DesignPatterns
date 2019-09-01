@@ -42,7 +42,7 @@ observer pattern 은 느슨하게 결합되어 있는 객체 디자인을 제공
 
 먼저, interface 부터 구현해 보겠다. 
 
-~~~
+~~~java
 public interface Subject {
     public void regsiterObserver(Observer o);  // 옵저버 등록
     public void removeObserver(Observer o);    // 옵저버 제거
@@ -50,13 +50,13 @@ public interface Subject {
 }
 ~~~
 
-~~~
+~~~java
 public interface CustomObserver {
     public void update(float temp , float humidity , float pressure);
 }
 ~~~
 
-~~~
+~~~java
 public interface DisplayElement {
     public void display();        // 화면에 표시해야하는 경우 사용할 메소드
 }
@@ -66,7 +66,7 @@ public interface DisplayElement {
 
 우선 subject의 기능을 해야하는 기상 장치 이다.
 
-~~~
+~~~java
 public class WeatherData implements Subject {
 
     private ArrayList<CustomObserver> customObservers;      // 옵저버들을 저장하는 변수
@@ -117,7 +117,7 @@ public class WeatherData implements Subject {
 
 다음은 디스플레이 장치를 만들어 보자.
 
-~~~
+~~~java
 public class ConditionDisplay implements CustomObserver , DisplayElement {
 
     private static final Logger logger = LoggerFactory.getLogger(ConditionDisplay.class);
@@ -150,7 +150,7 @@ public class ConditionDisplay implements CustomObserver , DisplayElement {
 
 이제 기상스테이션을 만들어 지금까지의 작업들을 연동시켜 보겠다.
 
-~~~
+~~~java
 public class WeatherStation {
     public WeatherStation(){
         run();
