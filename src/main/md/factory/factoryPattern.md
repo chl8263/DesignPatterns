@@ -260,4 +260,5 @@ public class NYPizzaStore extends PizzaStore {
 의존성 뒤집기 디자인의 원칙을 지키는데 몇가지 가이드 라인이 있는데 아래와 같다.
 
 
+
 __* 어떤변수에도 구상 클래스에 대한 레퍼런스를 저장하지 않는다.__
