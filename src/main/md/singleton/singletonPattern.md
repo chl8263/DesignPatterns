@@ -34,7 +34,36 @@ public class Singleton {
 
 이와 같은 예제의 구현으로 이제 Singleton 객체는 유일한 instance를 가지게 되었다. 하지만 이 경우 __multi-thread 환경에서 문제점이 발생한다.__
 
+### 2. Synchronized를 이용한 Singleton
 
+~~~java
+public class Singleton {
+
+    private static Singleton singletonObject;    
+
+    private Singleton(){}
+
+    public static synchronized Singleton getInstance(){  // 다중 thread 환경에서 동기화를 위해 synchronized 사용
+        if(singletonObject == null){
+            singletonObject = new Singleton();
+        }
+
+        return singletonObject;
+    }
+}
+~~~
+
+위의 코드를 보면 직관적으로 알 수있을 것이다. 멀티 쓰레드 환경에서 instance 를 2개를 만드는 불상사가 발생하지 않게 하기 위하여
+
+getInstance() 메소드에 동기화 키워드인 synchronized를 붙였다.
+
+이제 한 쓰레드가 이 메서드 사용을 끝마칠때까지 다른 쓰레드는 기다려야 한다.
+
+동기화 문제는 해결되어 보이는듯 하나 문제점은 여전히 존재한다.
+
+__synchronized 키워드를 사용하면 성능저하가 100 배__ 정도 된다고 한다.
+
+getInstance() 의 속도가 어플리케이션에 중요한 부분이 아니라면 크게 문제 되지는 않겠지만 더 효율적인 방법이 있다.
 
 
 
