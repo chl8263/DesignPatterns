@@ -135,6 +135,6 @@ ClassHolder 를 사용한다면 Singleton 클래스의 getInstance() 메소드�
 
 자세한 설명은 다음과 같으며 가장 좋은 방법으로 알려져 있다.
 
->Initialization on demand holder idiom은 lazy-loaded Singleton 으로 모든 Java 버전에서 the idiom은 좋은 성능으로 안전하고 동시 적이며 지연이 >적은 초기화를 가능하게한다.
+>Initialization on demand holder idiom은 lazy-loaded Singleton 으로 모든 Java 버전에서 the idiom은 좋은 성능으로 안전하고 동시 적이며 지연이 적은 초기화를 가능하게한다.
 >이것은 JVM의 class loader의 매커니즘과 class의 load 시점을 이용하여 내부 class를 생성시킴으로 thread 간의 동기화 문제를 해결한다.
 
