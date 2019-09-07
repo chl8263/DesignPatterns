@@ -29,15 +29,15 @@
 
 ------
 
-[execute1] [execute2]  - <비어있는 슬롯1>
+[execute] [execute]  - <비어있는 슬롯1>
 
-[execute1] [execute2]  - <비어있는 슬롯1>
+[execute] [execute]  - <비어있는 슬롯1>
 
-[execute1] [execute2]  - <비어있는 슬롯1>
+[execute] [execute]  - <비어있는 슬롯1>
 
-[execute1] [execute2]  - <비어있는 슬롯1>
+[execute] [execute]  - <비어있는 슬롯1>
 
-[execute1] [execute2]  - <비어있는 슬롯1>
+[execute] [execute]  - <비어있는 슬롯1>
 
 ------
 
@@ -47,9 +47,9 @@ execute는 해당하는 기능에 on , off , turn right 등등 해당하는 기�
 
 예를들어 전등을 키고 끄는 기능 , 커튼을 닫는기능 등등....
 
-따라서 리모컨의 execute1, execute2 버튼은 해당 슬롯의 기능중 구현되어 있는 execute1, execute2 를 호출 하기만 하면 된다.
+따라서 리모컨의 execute, execute 버튼은 해당 슬롯의 기능중 구현되어 있는 execute, execute 를 호출 하기만 하면 된다.
 
-execute1,execute2 에 해당하는 버튼들은 어떤것이 구현되어 있는지 알 필요가 없다.
+execute,execute 에 해당하는 버튼들은 어떤것이 구현되어 있는지 알 필요가 없다.
 
 간단하게 전등을 키고끄는 슬롯에 대한 기능을 만들겠다.
 
@@ -136,6 +136,81 @@ public class RemoteTest {
 Process finished with exit code 0
 ~~~
 
-위의 예제를 통해 살펴봤던것과 같이 Command pattern의 클래스 다이어 그램은 다음과 같다.
+__의 예제를 통해 살펴봤던것과 같이 Command pattern의 클래스 다이어 그램은 다음과 같다.__
 
 ![base](/src/main/md/command/img/command1.PNG)
+
+### 슬롯에 더 많은 기능을 추가하기
+
+이제 각 슬롯에 더 많은 기능들을 추가해 보겠다.
+
+------
+
+   [execute]           [execute]       - <거실전등>
+(LightOnCommand)   (LightOffCommand)
+
+   [execute]           [execute]       - <부엌전등>
+(LightOnCommand)   (LightOffCommand)
+
+   [execute]            [execute]       - <거실 선풍기>
+(FanHighCommand)     (FanOffCommand)
+
+   [execute]            [execute]  - <거실 에어컨>
+(AirOnCommand)     (AirOffCommand)
+
+   [execute]            [execute]  - <컴퓨터>
+(ComputerOnCommand)  (ComputerOffCommand)
+
+------
+
+Invoker 를 새롭게 변경하여 보자.
+
+~~~java
+public class RemoteControl {
+    Command [] slot1Commands;
+    Command [] slot2Commands;
+
+    public RemoteControl(int slotCount){
+        slot1Commands = new Command[slotCount];
+        slot2Commands = new Command[slotCount];
+
+        Command noCommand = new NoCommand();
+
+        for (Command com : slot1Commands){  // slot1Commands 초기화
+            com = noCommand;
+        }
+        for (Command com : slot2Commands){  // slot2Commands 초기화
+            com = noCommand;
+        }
+    }
+
+    public void setCommand(int slot, Command slot1Command, Command slot2Command){
+        slot1Commands[slot] = slot1Command;
+        slot2Commands[slot] = slot2Command;
+    }
+
+    public void slot1ButtonWasPushed(int slot){     // slot1 의 execute 를 실행
+        slot1Commands[slot].execute();
+    }
+
+    public void slot2ButtonWasPushed(int slot){     // slot2 의 execute 를 실행
+        slot2Commands[slot].execute();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("\n-------- Remote Control ----------");
+
+        for(int i=0; i< slot1Commands.length; i++){
+            builder.append("[slot" +i + "] " + slot1Commands[i].getClass().getName());
+            builder.append("       ");
+            builder.append(slot2Commands[i].getClass().getName());
+        }
+
+        return builder.toString();
+    }
+}
+~~~
+
