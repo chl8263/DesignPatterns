@@ -6,16 +6,16 @@
 ## 목차
 [1. Strategy pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/strategy/strategyPattern.md)
 
-
 [2. Observer pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/observer/observerPattern.md)
-
 
 [3. Decorator pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/decorator/decoratorPattern.md)
 
-[4. Factory pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/factory/factoryPattern.md)
+[4. FactoryMethod pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/factory/factoryPattern.md)
 
-5. 싱글턴 패턴
-6. 커맨드 패턴
+[5. Singleton pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/singleton/singletonPattern.md)
+
+[6. Command pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/command/commandPattern.md)
+
 7. 어댑터 패턴과 처사드 패턴
 8. 템플릿 메소드 패턴
 9. 이터레이터와 컴포지트 패턴

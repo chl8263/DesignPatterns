@@ -1,197 +1,141 @@
-## 3. Decorator pattern
+## 6. Command pattern
 
 ### 정의
+> 커맨드 패턴을 이용하면 요구 사항을 객체로 갭슐화 할 수 있으며, 매개변수를 써서 여러 가지 다른 요구사항을 집어넣을 수도 있다.
+> 또한 요청 내역을 큐에 저장하거나 로그로 기록할 수도 있으며 작업 취소 기능도 지원 가능하다.
 
-> 객체의 추가적인 요건을 동적으로 첨가한다.
-> 테코레이터는 서브클래스를 만드는 것을 통해서 기능을 유연하게 확장할 수 있는 방법을 제공한다.
+>실행될 기능을 캡슐화함으로써 주어진 여러 기능을 실행할 수 있는 재사용성이 높은 클래스를 설계하는 패턴
+>즉, 이벤트가 발생했을 때 실행될 기능이 다양하면서도 변경이 필요한 경우에 이벤트를 발생시키는 클래스를 변경하지 않고 재사용하고자 할 때 유용하다
 
-![base](/src/main/md/decorator/img/deco1.PNG)
+### 커맨드 패턴의 역할 및 구성
 
-__ConcreateComponent 에 새로운 행동을 동적으로 추가__ 할 수 있다.
-
-
-각 __데코레이터 안에는 Compoenet 객체가 들어있다.__
-
-__즉, 데코레이터에는 구성요소에 대한 레퍼런스가 들어있는 인스턴스 변수가 있다.__
-
-Decorator는 자신이 장식랑 구성요소와 같은 인터페이스 또는 추상 클래스를 구현한다.
-
-__ConcteateDecorator에는 그 객체가 장식하고 있는 것(데코레이터가 감싸고 있는 Component 객체)를 위한 인스턴스 변수가 있다.__
-
-따라서 Decorator 는 component 의 상태를 확장할 수 있다.
-
-테코레이터에서 새로운 메소드를 추가할 수 있다. 하지만 일반적으로 새로운 메소드를 추가하는 대신 Component에 원래 있던 메소드를 호출하기 전, 또는 후에 별도의 작업을 처리하는 방식으로 새로운 기능을 추가한다.
-
-## 예제
-
-카페 사업을 새로 시작한다고 가정해 보자.
-
-처음 사업을 시작할때 클래스는 다음과 같이 구성했다.
-
-![base](/src/main/md/decorator/img/deco2.PNG)
-
-커피를 주문할때는 스팀이나 우유, 두유 모카 등등 을 추가할 수 있다. 그래서 아래의 클래스 다이어그램처럼 구현했다.
-
-![base](/src/main/md/decorator/img/deco3.PNG)
-
-__클래스 갯수가 폭발적으로 늘어나는 문제점이 생겼다.__
-
-그래서 인스턴스 변수와 수퍼 클래스 상속을 사용하여 추가사항을 관리해보도록 수정했다.
-
-7
-
-그렇다면 최종적으로 구현 코트는 이렇게 될 것이다.
-
-~~~java
-public class Beverage{
-  // member
+- __Command__
+  - 실행될 기능에 대한 인터페이스
+  - 실행될 기능을 execute 메서드로 선언함
   
-  public int cost(){
-    int totalCost = 0;
-    if (hasMilk) totalCost += milk;
-    if (hasSoy) totalCost += soy;
-    if (hasMoca) totalCost += moca;
-    if (hasWhip) totalCost += whip;
-    return totalCost;
-  }
-}
+- __ConcreateCommnad__
+  - 실제로 실행되는 기능을 구현
+  - 즉 , Command 라는 인터페이스를 구현함
 
-public DarkRoast extands Beverage{
-  @Override
-  public int cost(){
-    return 1200 + super.cost();
-  }
-}
-~~~
+- __Invoker__
+  - 기능의 실행을 요청하는 호출자
+  
+- __Receiver__
+  - ConcreateCommand 에서 execute 메서드를 구현할 때 필요한 클래스
+  - 즉, ConcreateCommand 의 기능을 실행하기 위해 사용하는 수신자 클래스
 
-이렇게 상속을 사용하여 구현하는것은 몇가지 문제점이 있어 보인다.
+### 기본적인 예제 
+스마트폰의 Application 에 스마트 리모컨을 만들어 본다고 가정하자.
 
-* 첨가물 가격이 바뀔 때마다 기존코드를 수정해야 한다.
-* 첨가물의 종류가 많아지면 새로운 메소드를 추가해야하고, 수퍼클래스의 cost() 메소드도 고쳐야 한다.
-* 만약 새로운 음료가 출시 되었다고 한다면 특정 첨가물이 안들어 가지만 필요없는 첨가물을 상속 받아야 한다.
+------
 
-> OCP 
-> 클래스는 확장에 대해서는 열려 있어야 하지만 코드 변경에 대해서는 닫혀 있어야 한다.
+[execute1] [execute2]  - <비어있는 슬롯1>
 
-상속을 사용하는 방법은 좋은 해결책이 되지 못하였다. 클래스가 어마어마 하게 많아지거나 일부 서브클래스에는 적합하지 않은기능을베이스 클래스에 추가하게 되는 문제를 발견했었다.
+[execute1] [execute2]  - <비어있는 슬롯1>
 
-이제 나는 __데코레이터 패턴을 사용하여 특정 음료에서 시작하여 첨가물로 그 음료를 '장식'(Decorator) 할 것이다.__
+[execute1] [execute2]  - <비어있는 슬롯1>
 
-예를들어 어떤손님이 모카하고 휘핑 크림을 추가한 로스트 커피를 주문한다면 다음과 같은 식으로 할 수 있을 것이다.
+[execute1] [execute2]  - <비어있는 슬롯1>
 
-__1. DarkRoast 객체를 가져온다.__
+[execute1] [execute2]  - <비어있는 슬롯1>
 
-__2. Mocha 객체로 장식한다.__
+------
 
-__3. Whip 객체로 장식한다.__
+위와같이 버튼이 2개가 들어있고 사용자의 기호에 따라 원하는 기능을 넣을 수 있다. 
 
-__4. cost() 메소드를 호출한다. 이떄 첨가물의 가격을 계산하는 일은 해당 객체들에게 위임한다.__
+execute는 해당하는 기능에 on , off , turn right 등등 해당하는 기능사항에따라 바뀔 수 있다.
 
-![base](/src/main/md/decorator/img/deco5.PNG)
+예를들어 전등을 키고 끄는 기능 , 커튼을 닫는기능 등등....
 
-새롭게 바꾼 위의 클래스 다이어그램을 토대로 코드를 구현해 보자.
+따라서 리모컨의 execute1, execute2 버튼은 해당 슬롯의 기능중 구현되어 있는 execute1, execute2 를 호출 하기만 하면 된다.
+
+execute1,execute2 에 해당하는 버튼들은 어떤것이 구현되어 있는지 알 필요가 없다.
+
+간단하게 전등을 키고끄는 슬롯에 대한 기능을 만들겠다.
+
+우선 Command 인터페이스 부터 만들어 보자.
 
 ~~~java
-public abstract class Beverage {
-    protected String description = "empty";
-
-    public String getDescription(){
-        return description;
-    }
-
-    public abstract double cost();
+public interface Command {
+ 
+    public void execute();
 }
 ~~~
 
-~~~java
-public abstract class CondimentDecorator extends Beverage {
-    public abstract String getDescription();
-}
-~~~
+Receiver 에 해당하는 Light Class 
 
 ~~~java
-public class Mocha extends CondimentDecorator {
+public class Light {
 
-    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
+    private static final Logger logger = LoggerFactory.getLogger(Light.class);
 
-    public Mocha(Beverage beverage){    // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
-        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
-    }                                   // 방식을 사용했다.
 
-    @Override
-    public String getDescription() {
-        return beverage.getDescription() + ", 모카";
-    }
-
-    @Override
-    public double cost() {
-        return .20 + beverage.cost();
+    public void on(){
+        logger.info("전등이 켜졌습니다.");
     }
 }
 ~~~
 
+ConcreateCommand 에 해당하는 LightOnCommand Class
+
 ~~~java
-public class Soy extends CondimentDecorator {
+public class LightOnCommand implements Command {
 
-    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
+    private Light light ;
 
-    public Soy(Beverage beverage){      // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
-        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
-    }                                   // 방식을 사용했다.
-
-    @Override
-    public String getDescription() {
-        return beverage.getDescription() + ", 두유";
+    public LightOnCommand (Light light){
+        this.light = light;
     }
-
     @Override
-    public double cost() {
-        return .50 + beverage.cost();
+    public void execute() {
+        light.on();
     }
 }
 ~~~
 
+기능을 호출하는 invoker 인 SImpleRemoteControl Class 즉 이 예제 에서는 리모컨이 되겠다.
 ~~~java
-public class Whip extends CondimentDecorator {
+public class SImpleRemoteControl {
 
-    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
+    private Command slot;      // 우선 리모컨의 슬롯 1개만 만들어 놓았음
 
-    public Whip(Beverage beverage){      // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
-        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
-    }                                   // 방식을 사용했다.
+    public SImpleRemoteControl(){}
 
-    @Override
-    public String getDescription() {
-        return beverage.getDescription() + ", 휘핑";
+    public void setCommand(Command command){    // Command 를 받아 제어하기 위한 메소드
+        this.slot = command;
     }
 
-    @Override
-    public double cost() {
-        return .15 + beverage.cost();
+    public void buttonWasPressed(){     // 리모컨의 버튼이 눌릴경우 command 의 execute가 호출
+        slot.execute();
     }
 }
 ~~~
 
+위의 예제를 실행하기 위한 Test 코드와 결과는 아래와 같다.
 ~~~java
-public void run(){
-        Beverage beverage = new Espresso();
+public class RemoteTest {
 
-        logger.info(beverage.getDescription() + " $" + beverage.cost());
-
-        Beverage beverage2 = new HouseBlend();
-        beverage2 = new Mocha(beverage2);
-        beverage2 = new Soy(beverage2);
-        beverage2 = new Whip(beverage2);
-
-        logger.info(beverage2.getDescription() + " $" + beverage2.cost());
+    public RemoteTest(){
+        run();
     }
+
+    private void run(){
+        SImpleRemoteControl control = new SImpleRemoteControl();    // invoker 새성
+        Light light = new Light();      // Command 생성
+        LightOnCommand lightOnCommand = new LightOnCommand(light);  // ConcreateCommand 생성
+
+        control.setCommand(lightOnCommand); // invoker 에 ConcreateCommand 를 넣어줌
+        control.buttonWasPressed();
+    }
+}
 ~~~
 
-결과는 다음과 같이 출력된다.
-
 ~~~
-01:14:53.859 [main] INFO decorator.CoffeMachine - 에스프레소 $1.99
-01:14:53.861 [main] INFO decorator.CoffeMachine - 하우스 블랜드, 모카, 두유, 휘핑 $1.74
+22:36:47.436 [main] INFO command.receiver.Light - 전등이 켜졌습니다.
 
 Process finished with exit code 0
 ~~~
+
+위의 예제를 통해 살펴봤던것과 같이 Command pattern의 클래스 다이어 그램은 다음과 같다.
+
+![base](/src/main/md/command/img/command1.PNG)

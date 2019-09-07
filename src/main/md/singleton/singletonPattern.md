@@ -1,197 +1,153 @@
-## 3. Decorator pattern
+## 5. Singleton pattern
 
-### 정의
+## 정의
+>싱글턴 패턴은 해당 클래스의 인스턴스가 하나만 만들어지고, 어디서든지 그 인스턴스에 접근할 수 있도록 하기 위한 패턴이다.
 
-> 객체의 추가적인 요건을 동적으로 첨가한다.
-> 테코레이터는 서브클래스를 만드는 것을 통해서 기능을 유연하게 확장할 수 있는 방법을 제공한다.
+### 싱글톤은 언제 쓰이는가?
+쓰레드 풀, 캐시 , 대화상자 , 사용자 설정 등 인스턴스를 두개 이상 만들었을때 프로그램이 이상하게 돌아간다거나 자원을 불필요하게 잡아먹는다던가 결과에 일관성이 없어지는 경우 사용하곤한다.
 
-![base](/src/main/md/decorator/img/deco1.PNG)
+위의 예시에서도 볼 수 있듯이 singleton 패턴은 특정 클래스에 대해 객체 인스턴스가 하나만 만들어질 수 있도록 해주는 패턴이다.
 
-__ConcreateComponent 에 새로운 행동을 동적으로 추가__ 할 수 있다.
+즉, 싱글톤 패턴의 핵심은 어떠한 상황에서든 해당 객체의 인스턴스는 하나만 존재해야 한다는 것이다.
 
-
-각 __데코레이터 안에는 Compoenet 객체가 들어있다.__
-
-__즉, 데코레이터에는 구성요소에 대한 레퍼런스가 들어있는 인스턴스 변수가 있다.__
-
-Decorator는 자신이 장식랑 구성요소와 같은 인터페이스 또는 추상 클래스를 구현한다.
-
-__ConcteateDecorator에는 그 객체가 장식하고 있는 것(데코레이터가 감싸고 있는 Component 객체)를 위한 인스턴스 변수가 있다.__
-
-따라서 Decorator 는 component 의 상태를 확장할 수 있다.
-
-테코레이터에서 새로운 메소드를 추가할 수 있다. 하지만 일반적으로 새로운 메소드를 추가하는 대신 Component에 원래 있던 메소드를 호출하기 전, 또는 후에 별도의 작업을 처리하는 방식으로 새로운 기능을 추가한다.
-
-## 예제
-
-카페 사업을 새로 시작한다고 가정해 보자.
-
-처음 사업을 시작할때 클래스는 다음과 같이 구성했다.
-
-![base](/src/main/md/decorator/img/deco2.PNG)
-
-커피를 주문할때는 스팀이나 우유, 두유 모카 등등 을 추가할 수 있다. 그래서 아래의 클래스 다이어그램처럼 구현했다.
-
-![base](/src/main/md/decorator/img/deco3.PNG)
-
-__클래스 갯수가 폭발적으로 늘어나는 문제점이 생겼다.__
-
-그래서 인스턴스 변수와 수퍼 클래스 상속을 사용하여 추가사항을 관리해보도록 수정했다.
-
-7
-
-그렇다면 최종적으로 구현 코트는 이렇게 될 것이다.
-
+### 1. 고전적인 Singleton
 ~~~java
-public class Beverage{
-  // member
-  
-  public int cost(){
-    int totalCost = 0;
-    if (hasMilk) totalCost += milk;
-    if (hasSoy) totalCost += soy;
-    if (hasMoca) totalCost += moca;
-    if (hasWhip) totalCost += whip;
-    return totalCost;
-  }
-}
+public class Singleton {
 
-public DarkRoast extands Beverage{
-  @Override
-  public int cost(){
-    return 1200 + super.cost();
-  }
-}
-~~~
+    private static Singleton singletonObject;    // 유일한 인스턴스를 저장하기위한 변수
 
-이렇게 상속을 사용하여 구현하는것은 몇가지 문제점이 있어 보인다.
+    private Singleton(){}   // 생성자를 private 로 선언 했기 때문에 Singleton 클래스 내부에서만 인스턴스를 만들 수있다.
 
-* 첨가물 가격이 바뀔 때마다 기존코드를 수정해야 한다.
-* 첨가물의 종류가 많아지면 새로운 메소드를 추가해야하고, 수퍼클래스의 cost() 메소드도 고쳐야 한다.
-* 만약 새로운 음료가 출시 되었다고 한다면 특정 첨가물이 안들어 가지만 필요없는 첨가물을 상속 받아야 한다.
+    public static Singleton getInstance(){
+        if(singletonObject == null){     // 만들어진 객체가 없다면 생성해줌
+            singletonObject = new Singleton();
+        }
 
-> OCP 
-> 클래스는 확장에 대해서는 열려 있어야 하지만 코드 변경에 대해서는 닫혀 있어야 한다.
-
-상속을 사용하는 방법은 좋은 해결책이 되지 못하였다. 클래스가 어마어마 하게 많아지거나 일부 서브클래스에는 적합하지 않은기능을베이스 클래스에 추가하게 되는 문제를 발견했었다.
-
-이제 나는 __데코레이터 패턴을 사용하여 특정 음료에서 시작하여 첨가물로 그 음료를 '장식'(Decorator) 할 것이다.__
-
-예를들어 어떤손님이 모카하고 휘핑 크림을 추가한 로스트 커피를 주문한다면 다음과 같은 식으로 할 수 있을 것이다.
-
-__1. DarkRoast 객체를 가져온다.__
-
-__2. Mocha 객체로 장식한다.__
-
-__3. Whip 객체로 장식한다.__
-
-__4. cost() 메소드를 호출한다. 이떄 첨가물의 가격을 계산하는 일은 해당 객체들에게 위임한다.__
-
-![base](/src/main/md/decorator/img/deco5.PNG)
-
-새롭게 바꾼 위의 클래스 다이어그램을 토대로 코드를 구현해 보자.
-
-~~~java
-public abstract class Beverage {
-    protected String description = "empty";
-
-    public String getDescription(){
-        return description;
-    }
-
-    public abstract double cost();
-}
-~~~
-
-~~~java
-public abstract class CondimentDecorator extends Beverage {
-    public abstract String getDescription();
-}
-~~~
-
-~~~java
-public class Mocha extends CondimentDecorator {
-
-    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
-
-    public Mocha(Beverage beverage){    // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
-        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
-    }                                   // 방식을 사용했다.
-
-    @Override
-    public String getDescription() {
-        return beverage.getDescription() + ", 모카";
-    }
-
-    @Override
-    public double cost() {
-        return .20 + beverage.cost();
+        return singletonObject;
     }
 }
 ~~~
 
+위의 구현 방법은 이 인스턴스가 필요한 시점에 getInstence()가 호출되는 시점, 즉 해당 객체의 인스턴스가 필요한 상황이 왔을떄 인스턴스를 생성한다.
+
+이와 같이 미리 생성하지 않고 필요한 상황에서 instance를 만드는 것을 __lazy instantiation(게으른 초기화)__ 라고 한다.
+
+이와 같은 예제의 구현으로 이제 Singleton 객체는 유일한 instance를 가지게 되었다. 하지만 이 경우 __multi-thread 환경에서 문제점이 발생한다.__
+
+### 2. Synchronized를 이용한 Singleton
+
 ~~~java
-public class Soy extends CondimentDecorator {
+public class Singleton {
 
-    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
+    private static Singleton singletonObject;    
 
-    public Soy(Beverage beverage){      // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
-        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
-    }                                   // 방식을 사용했다.
+    private Singleton(){}
 
-    @Override
-    public String getDescription() {
-        return beverage.getDescription() + ", 두유";
-    }
+    public static synchronized Singleton getInstance(){  // 다중 thread 환경에서 동기화를 위해 synchronized 사용
+        if(singletonObject == null){
+            singletonObject = new Singleton();
+        }
 
-    @Override
-    public double cost() {
-        return .50 + beverage.cost();
+        return singletonObject;
     }
 }
 ~~~
 
+위의 코드를 보면 직관적으로 알 수있을 것이다. 멀티 쓰레드 환경에서 instance 를 2개를 만드는 불상사가 발생하지 않게 하기 위하여
+
+getInstance() 메소드에 동기화 키워드인 synchronized를 붙였다.
+
+이제 한 쓰레드가 이 메서드 사용을 끝마칠때까지 다른 쓰레드는 기다려야 한다.
+
+동기화 문제는 해결되어 보이는듯 하나 문제점은 여전히 존재한다.
+
+__synchronized 키워드를 사용하면 성능저하가 100 배__ 정도 된다고 한다.
+
+getInstance() 의 속도가 어플리케이션에 중요한 부분이 아니라면 크게 문제 되지는 않겠지만 더 효율적인 방법이 있다.
+
+### 3. 정적 초기화시 Singleton 생성
+
 ~~~java
-public class Whip extends CondimentDecorator {
+public class Singleton {
 
-    Beverage beverage;  // 감싸고자 하는 음료를 저장하기 위한 인스턴스
+    private static Singleton singletonObject = new Singleton(); // 정적 초기화
 
-    public Whip(Beverage beverage){      // 인스턴스 변수를 감싸고자 하는 객체로 설정하기 위한 생성자
-        this.beverage = beverage;       // 데코레이터의 생성자에 감싸고자 하는 음료 객체를 전달하는
-    }                                   // 방식을 사용했다.
+    private Singleton(){}
 
-    @Override
-    public String getDescription() {
-        return beverage.getDescription() + ", 휘핑";
-    }
-
-    @Override
-    public double cost() {
-        return .15 + beverage.cost();
+    public static synchronized Singleton getInstance(){  
+        return singletonObject;
     }
 }
 ~~~
 
+이 구현법을 사용하면 클래스가 로딩될떄 JVM 에서 유일한 인스턴스를 생성해 준다. 로딩시 외에는 인스턴스를 생성할 수 없기 때문에 다수의 객체를 생성하는 문제점을 해결했다.
+
+하지만 getInstance() 가 많은 자원을 필요로 한다면 최초 로딩시 속도 저하의 문제가 발생할 수 있다.
+
+### 4. DCL(Double-checking Locking)을 이용한 Singleton 생성
+
 ~~~java
-public void run(){
-        Beverage beverage = new Espresso();
+public class Singleton {
 
-        logger.info(beverage.getDescription() + " $" + beverage.cost());
+    private volatile static Singleton singletonObject;  // 변수 최신화를 위한 volatile 키워드를 붙여줌
 
-        Beverage beverage2 = new HouseBlend();
-        beverage2 = new Mocha(beverage2);
-        beverage2 = new Soy(beverage2);
-        beverage2 = new Whip(beverage2);
+    private Singleton(){}
 
-        logger.info(beverage2.getDescription() + " $" + beverage2.cost());
+    public static Singleton getInstance(){  
+        if(singletonObject == null){    // 인스턴스가 있는지 확인
+            synchronized(Singleton.class){  // 최초에만 동기화
+                if(singletonObject == null){    // 인스턴스가 있는지 다시한번 확인
+                    singletonObject = new Singleton();
+                }
+            }
+        }
+        return singletonObject;
     }
+}
 ~~~
 
-결과는 다음과 같이 출력된다.
+DCL 을 사용하면, 인스턴스가 생성되어 있는지 확인한 다음 생성되지 않을을 때만 동기화를 할 수 있다.
 
-~~~
-01:14:53.859 [main] INFO decorator.CoffeMachine - 에스프레소 $1.99
-01:14:53.861 [main] INFO decorator.CoffeMachine - 하우스 블랜드, 모카, 두유, 휘핑 $1.74
+하지만 DCL을 이용하면 Multi-processer 가 shared-momery를 사용하면서 문제가 발생하기 쉽다고 한다.
 
-Process finished with exit code 0
+좀더 알아보자면 사실상 위의 코드는 별다른 문제가 없어보인다.
+
+그러나 __CPU와 메모리 아키텍쳐 때문에__ multi Thread 환경에 적합하지 않는 것이다.
+
+현대의 CPU 는 연산을 위해 다양한 종류의 메모리를 사용한다. 그 종류는 __레지스터(Register)__, __캐시(cache)__ , __RAM__ 이 될것이다.
+
+이렇게 CPU가 사용하는 메모리의 종류가 여러개인 이유는 CPU와 메모리의 속도 차이때문인데,
+
+여기서 문제점은 DCLP알고리즘은 CPU가 RAM 에서만 메모리를 사용한다고 가정하여 위 코드의 instance 가 레지스터나 캐시에 있을경우 
+
+특히 Multi CPU, Core 시스템에서 각각의 코어는 전용의 레지스터 와 캐시를 가진다. 
+
+__결국 RAM과 각 코어의 레지스터 혹은 캐시와 동기화, 일관성 문제 가 발생할 여지가 충분히 발생한다.__
+
+### 5. ClassHolder를 이용한 Singleton 생성
+
+~~~java
+public class Singleton {
+
+    private Singleton(){}
+    
+    private static class SingleHolder{
+        static final SingleTon Instance = new Singleton();
+    }
+
+    public static Singleton getInstance(){  
+        return SingleHolder.Instance;
+    }
+}
 ~~~
+
+ClassHolder 를 사용한다면 Singleton 클래스의 getInstance() 메소드를 호출할 때 ClassHolder를 클래스 로더가 생성하기 때문에
+
+좋은 성능을 보장하고 지연이 가장 적은 초기화를 가능하게 한다.
+
+자세한 설명은 다음과 같으며 가장 좋은 방법으로 알려져 있다.
+
+>Initialization on demand holder idiom은 lazy-loaded Singleton 으로 모든 Java 버전에서 the idiom은 좋은 성능으로 안전하고 동시 적이며 지연이 적은 초기화를 가능하게한다.
+>이것은 JVM의 class loader의 매커니즘과 class의 load 시점을 이용하여 내부 class를 생성시킴으로 thread 간의 동기화 문제를 해결한다.
+
+__Android Recycler View 에서도 이러한 Holder 패턴으로 List 자원을 효율적으로 관라한다.__
