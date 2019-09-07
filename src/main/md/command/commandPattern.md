@@ -112,7 +112,7 @@ public class SImpleRemoteControl {
 ~~~
 
 위의 예제를 실행하기 위한 Test 코드와 결과는 아래와 같다.
-~~~jva
+~~~java
 public class RemoteTest {
 
     public RemoteTest(){
@@ -135,3 +135,7 @@ public class RemoteTest {
 
 Process finished with exit code 0
 ~~~
+
+위의 예제를 통해 살펴봤던것과 같이 Command pattern의 클래스 다이어 그램은 다음과 같다.
+
+![base](/src/main/md/command/img/command1.PNG)
