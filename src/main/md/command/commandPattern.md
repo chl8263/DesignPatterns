@@ -23,7 +23,7 @@
 - __Receiver__
   - ConcreateCommand 에서 execute 메서드를 구현할 때 필요한 클래스
   - 즉, ConcreateCommand 의 기능을 실행하기 위해 사용하는 수신자 클래스
-
+<br/>
 ### 기본적인 예제 
 스마트폰의 Application 에 스마트 리모컨을 만들어 본다고 가정하자.
 
@@ -61,7 +61,7 @@ public interface Command {
     public void execute();
 }
 ~~~
-
+<br/>
 Receiver 에 해당하는 Light Class 
 
 ~~~java
@@ -75,7 +75,7 @@ public class Light {
     }
 }
 ~~~
-
+<br/>
 ConcreateCommand 에 해당하는 LightOnCommand Class
 
 ~~~java
@@ -92,7 +92,7 @@ public class LightOnCommand implements Command {
     }
 }
 ~~~
-
+<br/>
 기능을 호출하는 invoker 인 SImpleRemoteControl Class 즉 이 예제 에서는 리모컨이 되겠다.
 ~~~java
 public class SImpleRemoteControl {
@@ -110,7 +110,7 @@ public class SImpleRemoteControl {
     }
 }
 ~~~
-
+<br/>
 위의 예제를 실행하기 위한 Test 코드와 결과는 아래와 같다.
 ~~~java
 public class RemoteTest {
@@ -135,11 +135,11 @@ public class RemoteTest {
 
 Process finished with exit code 0
 ~~~
-
+<br/>
 __의 예제를 통해 살펴봤던것과 같이 Command pattern의 클래스 다이어 그램은 다음과 같다.__
 
 ![base](/src/main/md/command/img/command1.PNG)
-
+<br/>
 ### 슬롯에 더 많은 기능을 추가하기
 
 이제 각 슬롯에 더 많은 기능들을 추가해 보겠다.
@@ -213,7 +213,7 @@ public class RemoteControl {
     }
 }
 ~~~
-
+<br/>
 그리고 실행할 Test를 작성해 보자.
 
 ~~~java
@@ -276,7 +276,7 @@ public class RemoteTest {
     }
 }
 ~~~
-
+<br/>
 그에따른 결과는 아래와 같다.
 ~~~
 00:34:52.804 [main] INFO command.receiver.Light - 거실 전등이 켜졌습니다.
@@ -293,7 +293,6 @@ public class RemoteTest {
 Process finished with exit code 0
 ~~~
 
-<br/>
 <br/>
 <br/>
 
