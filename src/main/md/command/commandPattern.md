@@ -7,6 +7,23 @@
 >실행될 기능을 캡슐화함으로써 주어진 여러 기능을 실행할 수 있는 재사용성이 높은 클래스를 설계하는 패턴
 >즉, 이벤트가 발생했을 때 실행될 기능이 다양하면서도 변경이 필요한 경우에 이벤트를 발생시키는 클래스를 변경하지 않고 재사용하고자 할 때 유용하다
 
+### 커맨드 패턴의 역할 및 구성
+
+- __Command__
+  - 실행될 기능에 대한 인터페이스
+  - 실행될 기능을 execute 메서드로 선언함
+  
+- __ConcreateCommnad__
+  - 실제로 실행되는 기능을 구현
+  - 즉 , Command 라는 인터페이스를 구현함
+
+- __Invoker__
+  - 기능의 실행을 요청하는 호출자
+  
+- __Receiver__
+  - ConcreateCommand 에서 execute 메서드를 구현할 때 필요한 클래스
+  - 즉, ConcreateCommand 의 기능을 실행하기 위해 사용하는 수신자 클래스
+
 ### 기본적인 예제 
 스마트폰의 Application 에 스마트 리모컨을 만들어 본다고 가정하자.
 
@@ -36,7 +53,7 @@ execute1,execute2 에 해당하는 버튼들은 어떤것이 구현되어 있는
 
 간단하게 전등을 키고끄는 슬롯에 대한 기능을 만들겠다.
 
-우선 Command 인터 페이스 부터 만들어 보자.
+우선 Command 인터페이스 부터 만들어 보자.
 
 ~~~java
 public interface Command {
@@ -45,6 +62,76 @@ public interface Command {
 }
 ~~~
 
-전등 class 를 만들고
+Receiver 에 해당하는 Light Class 
+
+~~~java
+public class Light {
+
+    private static final Logger logger = LoggerFactory.getLogger(Light.class);
 
 
+    public void on(){
+        logger.info("전등이 켜졌습니다.");
+    }
+}
+~~~
+
+ConcreateCommand 에 해당하는 LightOnCommand Class
+
+~~~java
+public class LightOnCommand implements Command {
+
+    private Light light ;
+
+    public LightOnCommand (Light light){
+        this.light = light;
+    }
+    @Override
+    public void execute() {
+        light.on();
+    }
+}
+~~~
+
+기능을 호출하는 invoker 인 SImpleRemoteControl Class 즉 이 예제 에서는 리모컨이 되겠다.
+~~~java
+public class SImpleRemoteControl {
+
+    private Command slot;      // 우선 리모컨의 슬롯 1개만 만들어 놓았음
+
+    public SImpleRemoteControl(){}
+
+    public void setCommand(Command command){    // Command 를 받아 제어하기 위한 메소드
+        this.slot = command;
+    }
+
+    public void buttonWasPressed(){     // 리모컨의 버튼이 눌릴경우 command 의 execute가 호출
+        slot.execute();
+    }
+}
+~~~
+
+위의 예제를 실행하기 위한 Test 코드와 결과는 아래와 같다.
+~~~jva
+public class RemoteTest {
+
+    public RemoteTest(){
+        run();
+    }
+
+    private void run(){
+        SImpleRemoteControl control = new SImpleRemoteControl();    // invoker 새성
+        Light light = new Light();      // Command 생성
+        LightOnCommand lightOnCommand = new LightOnCommand(light);  // ConcreateCommand 생성
+
+        control.setCommand(lightOnCommand); // invoker 에 ConcreateCommand 를 넣어줌
+        control.buttonWasPressed();
+    }
+}
+~~~
+
+~~~
+22:36:47.436 [main] INFO command.receiver.Light - 전등이 켜졌습니다.
+
+Process finished with exit code 0
+~~~
