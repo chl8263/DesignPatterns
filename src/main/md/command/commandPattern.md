@@ -174,7 +174,7 @@ public class RemoteControl {
         slot1Commands = new Command[slotCount];
         slot2Commands = new Command[slotCount];
 
-        Command noCommand = new NoCommand();
+        Command noCommand = new NoCommand();  // NULL 을 피하기 위해 아무것도 실행하지 않는 Command 
 
         for (Command com : slot1Commands){  // slot1Commands 초기화
             com = noCommand;
@@ -214,3 +214,81 @@ public class RemoteControl {
 }
 ~~~
 
+그리고 실행할 Test를 작성해 보자.
+
+~~~java
+public class RemoteTest {
+    private static final Logger logger = LoggerFactory.getLogger(RemoteTest.class);
+
+    public RemoteTest(){
+        run();
+    }
+
+    private void run(){
+        // invoker 생성
+        RemoteControl remoteControl = new RemoteControl(5);
+
+        // receiver 생성
+        Light livingRoomLight = new Light("거실");
+        Light kitchenLight = new Light("부엌");
+        Fan livingRoomFan = new Fan("거실");
+        Air livingRoomAir = new Air("거실");
+        Computer computer = new Computer("내방");
+
+        // Command 생성
+        LightOnCommand  livingRoomlightOnCommand = new LightOnCommand(livingRoomLight);
+        LightOffCommand  livingRoomlightOffCommand = new LightOffCommand(livingRoomLight);
+
+        LightOnCommand  kitchenOnCommand = new LightOnCommand(kitchenLight);
+        LightOffCommand  kitchenOffCommand = new LightOffCommand(kitchenLight);
+
+        FanOnCommand livingRoomFanOnCommand = new FanOnCommand(livingRoomFan);
+        FanOffCommand livingRoomFanOffCommand = new FanOffCommand(livingRoomFan);
+
+        AirOnCommand livingRoomAirOnCommand = new AirOnCommand(livingRoomAir);
+        AirOffCommand livingRoomAirOffCommand = new AirOffCommand(livingRoomAir);
+
+        ComputerOnCommand computerOnCommand = new ComputerOnCommand(computer);
+        ComputerOffCommand computerOffCommand = new ComputerOffCommand(computer);
+
+        // invoker 에 command setting
+        remoteControl.setCommand(0, livingRoomlightOnCommand , livingRoomlightOffCommand);
+        remoteControl.setCommand(1, kitchenOnCommand , kitchenOffCommand);
+        remoteControl.setCommand(2, livingRoomFanOnCommand , livingRoomFanOffCommand);
+        remoteControl.setCommand(3, livingRoomAirOnCommand , livingRoomAirOffCommand);
+        remoteControl.setCommand(4, computerOnCommand , computerOffCommand);
+
+        logger.info(remoteControl.toString());// 설정이 잘 되었는지 확인
+
+        // slot 1 버튼 누르기
+        remoteControl.slot1ButtonWasPushed(0);
+        remoteControl.slot1ButtonWasPushed(1);
+        remoteControl.slot1ButtonWasPushed(2);
+        remoteControl.slot1ButtonWasPushed(3);
+        remoteControl.slot1ButtonWasPushed(4);
+
+        // slot 2 버튼 누르기
+        remoteControl.slot2ButtonWasPushed(0);
+        remoteControl.slot2ButtonWasPushed(1);
+        remoteControl.slot2ButtonWasPushed(2);
+        remoteControl.slot2ButtonWasPushed(3);
+        remoteControl.slot2ButtonWasPushed(4);
+    }
+}
+~~~
+
+그에따른 결과는 아래와 같다.
+~~~
+00:34:52.804 [main] INFO command.receiver.Light - 거실 전등이 켜졌습니다.
+00:34:52.804 [main] INFO command.receiver.Light - 부엌 전등이 켜졌습니다.
+00:34:52.804 [main] INFO command.receiver.Fan - 거실 선풍기가 켜졌습니다.
+00:34:52.804 [main] INFO command.receiver.Air - 거실 에어컨이 켜졌습니다.
+00:34:52.804 [main] INFO command.receiver.Computer - 내방 컴퓨터가 켜졌습니다.
+00:34:52.804 [main] INFO command.receiver.Light - 거실 전등이 꺼졌습니다.
+00:34:52.804 [main] INFO command.receiver.Light - 부엌 전등이 꺼졌습니다.
+00:34:52.804 [main] INFO command.receiver.Fan - 거실 선풍기가 꺼졌습니다.
+00:34:52.804 [main] INFO command.receiver.Air - 거실 에어컨이 꺼졌습니다.
+00:34:52.804 [main] INFO command.receiver.Computer - 내방 컴퓨터가 꺼졌습니다.
+
+Process finished with exit code 0
+~~~
