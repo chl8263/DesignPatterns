@@ -120,8 +120,9 @@ DCL 을 사용하면, 인스턴스가 생성되어 있는지 확인한 다음 �
 
 여기서 문제점은 DCLP알고리즘은 CPU가 RAM 에서만 메모리를 사용한다고 가정하여 위 코드의 instance 가 레지스터나 캐시에 있을경우 
 
-특히 Multi CPU, Core 시스템에서 각각의 코어는 전용의 레지스터 와 캐시를 가진다. 결국 RAM과 각 코어의 레지스터 혹은 캐시와 동기화, 일관성 문제 가 
-발생할 여지가 충분히 발생한다. 
+특히 Multi CPU, Core 시스템에서 각각의 코어는 전용의 레지스터 와 캐시를 가진다. 
+
+__결국 RAM과 각 코어의 레지스터 혹은 캐시와 동기화, 일관성 문제 가 발생할 여지가 충분히 발생한다.__
 
 ### 5. ClassHolder를 이용한 Singleton 생성
 
@@ -149,3 +150,4 @@ ClassHolder 를 사용한다면 Singleton 클래스의 getInstance() 메소드�
 >Initialization on demand holder idiom은 lazy-loaded Singleton 으로 모든 Java 버전에서 the idiom은 좋은 성능으로 안전하고 동시 적이며 지연이 적은 초기화를 가능하게한다.
 >이것은 JVM의 class loader의 매커니즘과 class의 load 시점을 이용하여 내부 class를 생성시킴으로 thread 간의 동기화 문제를 해결한다.
 
+__Android Recycler View 에서도 이러한 Holder 패턴으로 List 자원을 효율적으로 관라한다.__
