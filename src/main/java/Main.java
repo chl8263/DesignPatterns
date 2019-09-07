@@ -1,3 +1,4 @@
+import command.RemoteTest;
 import decorator.CoffeMachine;
 import factory.PizzaDriven;
 import observer.WeatherStation;
@@ -13,7 +14,7 @@ public class Main {
     public static void main(String [] args){
 
         Main main = new Main();
-        main.factory();
+        main.command();
     }
 
     private void strategy(){
@@ -35,4 +36,6 @@ public class Main {
     private void factory(){
         new PizzaDriven();
     }
+
+    private void command(){ new RemoteTest(); }
 }
