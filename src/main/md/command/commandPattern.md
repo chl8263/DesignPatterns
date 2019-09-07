@@ -315,6 +315,117 @@ Process finished with exit code 0
 
 ### UNDO 버튼 추가하기
 
+마지막에 실행한 버튼을 UNDO 하는 기능을 삽입해보자.
 
 
+undo 를 기억하고 Command 에 undo 를 추가하여 준다.
+
+~~~java
+public interface Command {
+
+    public void execute();
+
+    public void undo();
+}
+~~~
+
+<br/>
+ConcreateCommand 도 다음과 같이 변경한다. 예를들어 on 기능을 하는 Command 라면 undo 메서드에 off 기능을 넣으면 된다.
+
+~~~java
+public class AirOnCommand implements Command {
+
+    private Air air;
+
+    public AirOnCommand(Air air){
+        this.air = air;
+    }
+    @Override
+    public void execute() {
+        air.on();
+    }
+
+    @Override
+    public void undo() {
+        air.off();
+    }
+}
+~~~
+
+<br/>
+invoker 를 간단하게 수정하여 undo를 만들 수 있다. 
+
+~~~java
+public class RemoteControl {
+
+    Command [] slot1Commands;
+    Command [] slot2Commands;
+    Command undo;
+
+    public RemoteControl(int slotCount){
+        slot1Commands = new Command[slotCount];
+        slot2Commands = new Command[slotCount];
+        undo = new NoCommand(); // undo default 생성
+        
+        Command noCommand = new NoCommand();
+
+        for (Command com : slot1Commands){ 
+            com = noCommand;
+        }
+        for (Command com : slot2Commands){
+            com = noCommand;
+        }
+    }
+
+    public void setCommand(int slot, Command slot1Command, Command slot2Command){
+        slot1Commands[slot] = slot1Command;
+        slot2Commands[slot] = slot2Command;
+    }
+
+    public void slot1ButtonWasPushed(int slot){    
+        slot1Commands[slot].execute();
+        undo = slot1Commands[slot]; // undo 설정
+    }
+
+    public void slot2ButtonWasPushed(int slot){  
+        slot2Commands[slot].execute();
+        undo = slot2Commands[slot]; // undo 설정
+    }
+    
+    public void undoButtonWasPressed(){
+        undo.undo();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("\n-------- Remote Control ----------");
+
+        for(int i=0; i< slot1Commands.length; i++){
+            builder.append("[slot" +i + "] " + slot1Commands[i].getClass().getName());
+            builder.append("       ");
+            builder.append(slot2Commands[i].getClass().getName());
+        }
+
+        return builder.toString();
+    }
+}
+~~~
+
+~~~
+01:00:26.898 [main] INFO command.receiver.Light - 거실 전등이 켜졌습니다.
+01:00:26.898 [main] INFO command.receiver.Light - 부엌 전등이 켜졌습니다.
+01:00:26.898 [main] INFO command.receiver.Fan - 거실 선풍기가 켜졌습니다.
+01:00:26.898 [main] INFO command.receiver.Air - 거실 에어컨이 켜졌습니다.
+01:00:26.898 [main] INFO command.receiver.Computer - 내방 컴퓨터가 켜졌습니다.
+01:00:26.898 [main] INFO command.receiver.Light - 거실 전등이 꺼졌습니다.
+01:00:26.898 [main] INFO command.receiver.Light - 부엌 전등이 꺼졌습니다.
+01:00:26.898 [main] INFO command.receiver.Fan - 거실 선풍기가 꺼졌습니다.
+01:00:26.898 [main] INFO command.receiver.Air - 거실 에어컨이 꺼졌습니다.
+01:00:26.898 [main] INFO command.receiver.Computer - 내방 컴퓨터가 꺼졌습니다.
+01:00:26.898 [main] INFO command.receiver.Computer - 내방 컴퓨터가 켜졌습니다.
+~~~
+
+__실행 결과 마지막에 컴퓨터가 다시 켜졌다 라는 결과를 볼 수 있다.__
 
