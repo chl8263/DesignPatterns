@@ -16,9 +16,14 @@
 
 [6. Command pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/command/commandPattern.md)
 
-7. 어댑터 패턴과 처사드 패턴
-8. 템플릿 메소드 패턴
-9. 이터레이터와 컴포지트 패턴
-10. 스테이트 패턴
-11. 프록시 패턴
-12. 컴파운드 패턴
+[7. Adapter pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/adapter/adapterPattern.md)
+
+[8. Facade pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/facade/facadePattern.md)
+
+
+9. 템플릿 메소드 패턴
+10. 이터레이터 패턴
+11. 컴포지트 패턴
+11. 스테이트 패턴
+12. 프록시 패턴
+13. 컴파운드 패턴
