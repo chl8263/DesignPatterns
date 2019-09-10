@@ -7,11 +7,11 @@
 
 이패턴의 주체는 Client, Facade, System 이다.
 
-본래 Client 는 아래의 그림과 같이 각각의 System을 일일이 알고 접근해야만 했었다.(Coupling)
+본래 Client 는 아래의 그림과 같이 각각의 System을 일일이 알고 접근해야만 했었다. __(Coupling)__
 
 ![base](/src/main/md/facade/img/facade1.PNG)
 
-하지만 Facade가 생기면서 Client는 각각의 System에 대해 몰라도 아래의 그림처럼 Facade를 통해 System의 기능을 사용할 수 있다.
+하지만 Facade가 생기면서 Client는 각각의 System에 대해 몰라도 아래의 그림처럼 Facade를 통해 System의 기능을 사용할 수 있다.__(DeCoupling)__
 
 ![base](/src/main/md/facade/img/facade2.PNG)
 
