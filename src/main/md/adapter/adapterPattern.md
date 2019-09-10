@@ -39,11 +39,13 @@ public interface Mediaplayer {
 먼저 interface를 구현 하겠다. mp3를 구동시킬 수 있는 Mediaplayer를 생성했다.
 
 <br/>
+
 ~~~java
 public interface Mediapakage {
     void playFile();
 }
 ~~~
+
 그다음 mp4, mkv 파일을 실행시키는 Mediapakage를 만들었다. 
 <br/>
 
