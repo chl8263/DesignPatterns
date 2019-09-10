@@ -1,3 +1,4 @@
+import adapter.AdapterTest;
 import command.RemoteTest;
 import decorator.CoffeMachine;
 import factory.PizzaDriven;
@@ -14,7 +15,7 @@ public class Main {
     public static void main(String [] args){
 
         Main main = new Main();
-        main.command();
+        main.adapter();
     }
 
     private void strategy(){
@@ -38,4 +39,8 @@ public class Main {
     }
 
     private void command(){ new RemoteTest(); }
+
+    private void adapter(){ new AdapterTest(); }
+
+    private void facade(){ new RemoteTest(); }
 }
