@@ -20,8 +20,8 @@
 
 [8. Facade pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/facade/facadePattern.md)
 
+[9. Template Method pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/template_method/templateMethodPattern.md)
 
-9. 템플릿 메소드 패턴
 10. 이터레이터 패턴
 11. 컴포지트 패턴
 11. 스테이트 패턴
