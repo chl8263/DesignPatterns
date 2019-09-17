@@ -22,8 +22,10 @@
 
 [9. Template Method pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/template_method/templateMethodPattern.md)
 
-10. 이터레이터 패턴
-11. 컴포지트 패턴
+[10. Iterator pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/iterator/iteratorPattern.md)
+
+[10. composite pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/composite/compositePattern.md)
+
 11. 스테이트 패턴
 12. 프록시 패턴
 13. 컴파운드 패턴
