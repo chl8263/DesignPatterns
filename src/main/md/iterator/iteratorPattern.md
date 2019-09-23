@@ -1,162 +1,248 @@
-## 7. Adapter pattern
+## 10. Iterator pattern
 
 ### 정의
-> 한 클래스의 인터페이스를 클라이언트에서 사용하고자 하는 다른 인터페이스로 변환한다.
-> 어댑터를 이용하면 인터페이스 호환성 문제 때문에 같이 쓸 수 없는 클래스들을 연결해서 쓸 수 있다.
+> 컬렉션 구현 방법을 노출시키지 않으면서도 그 집합체 안에 들어있는 모든 항목에 접근할 수 있게 해 주는 방법을 제공하는 패턴
 
-어댑터 패턴을 이용하면 호환되지 않는 인터페이스를 사용하는 클라이언트를 그대로 활용할 수 있게 된다.
+### 예제
 
-이렇게 함으로써 클라이언트와 구현된 인터페이스를 분리시킬 수 있으며, 나중에 인터페이스가 바뀌더라도 그 변경 내역은 어뎁터에 캡슐화되기 때문에 클라이언트는 바뀔 필요가 없다.
+어느 식당에서 두사람이 일을 한다고 가정하자.
 
-예를들어 아래와 같은 시스템의 경우라고 생각하면 되겠다.
+한사람은 점심 메뉴를 만들고 어떤 한 사람은 저녁 메뉴를 만들기로 하였다.
 
-![base](/src/main/md/adapter/img/adapter2.PNG)
-
-위와 같이 기존의 어떤 인터페이스를 클라이언트에서 요구하는 형태의 인터페이스에 적응 시켜주는 역할을 한다.
-
-![base](/src/main/md/adapter/img/adapter1.PNG)
-
-위의 그림은 Adapter 패턴의 클래스 다이어그램이다.
-
-클라이언트를 특정 구현이 아닌 인터페이스에 연결 시켜 서로 다른 백엔드 클래스로 변환시키는 것이 가능하다.
-
-이렇게 인터페이스를 기준으로 코딩을 했기때문에 타겟 인터페이스만 제대로 지킨다면 나중에 다른 구현을 추가하는 것도 가능하다.
-
-### 예제 
-
-- mp3 파일은 오디오를 재생시킨다.
-- mp4 파일은 동영상을 재생시킨다.
-- mkv 파일은 동영상을 재생시킨다.
-
-그렇다면 mp3 플레이어에서 mp4, mkv 파일을 가지고 오디오만 재생시킬 수 있게 하는 간단한 예제를 구현해 보겠다.
+점심메뉴를 만드는 사람은 다음과 같이 코드를 구현 하였다.
 
 ~~~java
-public interface Mediaplayer {
-    void play();
-}
-~~~
+public class LunchMenu {
 
-먼저 interface를 구현 하겠다. mp3를 구동시킬 수 있는 Mediaplayer를 생성했다.
+    private static final Logger logger = LoggerFactory.getLogger(LunchMenu.class);
 
-<br/>
+    final int MAX_ITEMS = 6;
+    private int numberOfItems = 0;
+    private MenuItem menuItems [];
 
-~~~java
-public interface Mediapakage {
-    void playFile();
-}
-~~~
+    public LunchMenu(){
+        menuItems = new MenuItem[MAX_ITEMS];
+        
+        addItem("돈까스");
+        addItem("생선까스");
+        addItem("비프까스");
+    }
 
-그다음 mp4, mkv 파일을 실행시키는 Mediapakage를 만들었다. 
-<br/>
+    public void addItem(String name){
+        if(numberOfItems >= MAX_ITEMS){
+            logger.info("메뉴가 가늑찼습니다. 등록할 수 없습니다.");
+        }else {
+            menuItems[numberOfItems] = new MenuItem(name);
+            numberOfItems++;
+        }
+    }
 
-~~~java
-public class Mp3 implements Mediaplayer {
-
-    private static final Logger logger = LoggerFactory.getLogger(Mp3.class);
-
-    @Override
-    public void play() {
-        logger.info("mp3 파일을 재생합니다.");
+    public MenuItem[] getMenuItems(){
+        return this.menuItems;
     }
 }
 ~~~
 
-mp3 파일은 Mediaplayer에서 재생된다. play메소드를 통해 재생되는 것을 알 수있다.
-<br/>
+위의 코드와 같이 점심 메뉴를 개발한 사람은 MenuItem 배열을 이용하여 생성자에 메뉴를 등록하는 방식을 사용했다.
 
 ~~~java
-public class Mp4 implements Mediapakage {
-    private static final Logger logger = LoggerFactory.getLogger(Mp4.class);
+public class DinnerMenu {
 
-    @Override
-    public void playFile() {
-        logger.info("mp4 파일을 재생합니다.");
+    private static final Logger logger = LoggerFactory.getLogger(DinnerMenu.class);
+
+    private ArrayList<MenuItem> menuItems;
+
+    public DinnerMenu(){
+        menuItems = new ArrayList<MenuItem>();
+        
+        this.addItem("양상추");
+        this.addItem("콩자반");
+        this.addItem("제육볶음");
+    }
+
+    public void addItem(String name){
+        menuItems.add(new MenuItem(name));
+    }
+
+    public ArrayList<MenuItem> getMenuItems (){
+        return this.menuItems;
     }
 }
 ~~~
 
-~~~java
-public class Mkv implements Mediapakage {
-    private static final Logger logger = LoggerFactory.getLogger(Mkv.class);
+위와 같이 저녁을 만드는 사람은 ArrayList 를 이용하여 구현한것을 볼 수 있다.
 
-    @Override
-    public void playFile() {
-        logger.info("Mkv 파일을 재생합니다.");
-    }
-}
-~~~
+### 문제점
 
-mp4 파일과 Mkv 파일은 Mediapakage 에서 재생된다.
-<br/>
-
-자 이제 그렇다면 Mediaplayer 환경에서 어떻게 Mediapakage환경에서 돌아가는 mp4, mkv 파일을 재생시킬 수 있을까??
-
-Mediaplayer를 구현하는 adapter를 이용하여 이 문제를 해결할 수 있다.
+메뉴 구현방식이 위와 같이 다르다보니, 점심과 저녁 메뉴 리스트를 출력할 때 다음과 같은 작업이 필요할 것 같다.
 
 ~~~java
-public class MediaAdapter implements Mediaplayer{
-    private static final Logger logger = LoggerFactory.getLogger(MediaAdapter.class);
+public class PrintMenu {
 
-    private Mediapakage mediapakage;    //mediapakage 객체를 인자로 받는다. 
+    private static final Logger logger = LoggerFactory.getLogger(PrintMenu.class);
 
-    public MediaAdapter(Mediapakage mediapakage){
-        this.mediapakage = mediapakage;
+    private LunchMenu lunchMenu;
+
+    private DinnerMenu dinnerMenu;
+
+    public PrintMenu(){
+        lunchMenu = new LunchMenu();
+        dinnerMenu = new DinnerMenu();
+
+        printMenu();
     }
 
-    @Override
-    public void play() {
-        if(mediapakage != null){
-            logger.info("Mediaplayer 환경에서 재생합니다. 오디오만 지원합니다.");
-            mediapakage.playFile(); // mediapakage 의 playFile을 play에서 실행 시켜준다.
+    public void printMenu(){
+        printLunch();
+        printDinner();
+    }
+
+    private void printLunch(){
+        MenuItem [] menuItems = lunchMenu.getMenuItems();
+        for(MenuItem item : menuItems){
+            try {
+                logger.info(item.getName());
+            }catch (NullPointerException e){ }
+        }
+    }
+
+    private void printDinner(){
+        ArrayList<MenuItem> menuItems = dinnerMenu.getMenuItems();
+        for(MenuItem item : menuItems){
+            logger.info(item.getName());
         }
     }
 }
 ~~~
 
-<br/>
+다음과 같이 점심 메뉴와 저녁 메뉴의 음식을 각각 출력 하여면 위와 같이 방식이 다른 순환문 2개를 돌려야만 한다.
 
-위와같이 MediaPlayer를 구현하는 Adapter를 하나 생성하고 mediaPAkage를 맴버로 가진뒤 play() 메소드 안에 playFile() 메소드를 연결시켜주면 
-간단히 구현이 끝난다.
+### 바뀔 수 있는 부분을 캡슐화 하기
 
-즉, adapter의 구현으로 mp3,mp4,mkv Class의 소스를 수정없이 적용시킬 수 있다.
+__인 패턴의 가장 중요한 원리 중 하나인 바뀌는 부분을 캡슐화를 해야한다.__
 
-밑의 사용 코드를 보자.
+ArrayList 는 get() , 배열은 length 를 통하여 각각의 레퍼런스를 구할 수 있다.
+
+이제, 객체의 컬렉션에 대한 반복작업을 처리하는 방법을 캡슐화한 Iterator라는 객체를 만들어 보면 어떨까??
 
 ~~~java
-public class AdapterTest {
-    public AdapterTest(){
-        run();
-    }
+Iterator iterator = LunchMenu.createIterator(); // DinnerMenu에 대한 반복자를 요구한다.
 
-    private void run(){
-        Mediaplayer mp3 = new Mp3();
-        mp3.play();         // mp3 만 재생시킨경우
+while(iterator.hasNext()){  // 아직 항목이 남아있는 동안
+    MenuItem menuItem = (MenuItem)iterator.next();  // 다음항목을 뽑아낸다.
+}
+~~~
 
-        Mediapakage mp4 = new Mp4();
-        mp4.playFile();     // mp4 만 재생시킨경우
+위의 코드와 같이 Iterator를 만들어 공통화 시키면 리스트를 출력하는 작업을 단일화 시킬 수 있을것 같다.
 
-        Mediapakage mkv = new Mkv();
-        mkv.playFile();     // mkv 만 재생시킨경우
+위같은 코드가 바로 이터레이터 패턴인데 이것은 인터페이스에 의존한다.
 
-        Mediaplayer mpAdapter1 = new MediaAdapter(new Mp4());
-        mpAdapter1.play();  // Mediaplayer에 mp4를 재생시킨경우
+Iterator 인터페이스만 있으면 배열,리스트,해시테이블은 물론, 그 어떤 종류의 객체 컬렉션에 대해서도 반복자를 구현할수 있다.
 
-        Mediaplayer mpAdapter2 = new MediaAdapter(new Mkv());
-        mpAdapter2.play();  // Mediaplayer에 mkv를 재생시킨경우
-    }
+우선 Iterator 인터페이스를 구현해 보자.
+
+~~~java
+public interface Iterator {
+    boolean hasNext();  // 그다음 반복작업을 수행할 수 있는지
+    Object next();      // 다음항목을 리턴
 }
 ~~~
 
 ~~~java
-23:58:39.986 [main] INFO adapter.Mp3 - mp3 파일을 재생합니다.
-23:58:39.988 [main] INFO adapter.Mp4 - mp4 파일을 재생합니다.
-23:58:39.989 [main] INFO adapter.Mkv - Mkv 파일을 재생합니다.
-23:58:39.989 [main] INFO adapter.MediaAdapter - Mediaplayer 환경에서 재생합니다. 오디오만 지원합니다.
-23:58:39.989 [main] INFO adapter.Mp4 - mp4 파일을 재생합니다.
-23:58:39.989 [main] INFO adapter.MediaAdapter - Mediaplayer 환경에서 재생합니다. 오디오만 지원합니다.
-23:58:39.989 [main] INFO adapter.Mkv - Mkv 파일을 재생합니다.
+public class LunchMenuIterator implements Iterator {
+
+    private MenuItem menuItems[];
+    private int position = 0;
+
+    public LunchMenuIterator(MenuItem items []){
+        this.menuItems = items;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if(position >= menuItems.length || menuItems[position] == null)
+            return false;
+        else return true;
+    }
+
+    @Override
+    public Object next() {
+        return menuItems[position++].getName();
+    }
+}
+~~~
+
+다음은 위의 코드와 같이 DinnerMenu 에 대한 DinnerMenuIterator 클래스를 추가해준다
+
+~~~java
+public class LunchMenu {
+
+    private static final Logger logger = LoggerFactory.getLogger(LunchMenu.class);
+
+    final int MAX_ITEMS = 6;
+    private int numberOfItems = 0;
+    private MenuItem menuItems [];
+
+    public LunchMenu(){
+        menuItems = new MenuItem[MAX_ITEMS];
+
+        addItem("돈까스");
+        addItem("생선까스");
+        addItem("비프까스");
+    }
+
+    public void addItem(String name){
+        if(numberOfItems >= MAX_ITEMS){
+            logger.info("메뉴가 가늑찼습니다. 등록할 수 없습니다.");
+        }else {
+            menuItems[numberOfItems++] = new MenuItem(name);
+        }
+    }
+
+    public Iterator createIterator(){
+        return new LunchMenuIterator(menuItems);
+    }
+}
+~~~
+
+이제 LunchMenu 코드의 반복자는 createIterator() 의 호출에 의해서 수행될 수 있다.
+
+~~~java
+public class PrintMenu {
+
+    private static final Logger logger = LoggerFactory.getLogger(PrintMenu.class);
+
+    private LunchMenu lunchMenu;
+
+    private DinnerMenu dinnerMenu;
+
+    public PrintMenu(){
+        lunchMenu = new LunchMenu();
+        dinnerMenu = new DinnerMenu();
+
+        printMenu();
+    }
+
+    public void printMenu(){
+        printLunch();
+    }
+
+    private void printLunch(){
+        Iterator iterator = lunchMenu.createIterator();
+        while (iterator.hasNext()){
+            logger.info(iterator.next().toString());
+        }
+    }
+}
+~~~
+
+Lunch 메뉴에 대해서 앞으로 printLunch() 의 Iterator 만 사용하여 단일화로써 리스트를 출력할 수 있게 된다.
+
+
+~~~java
+02:22:21.099 [main] INFO iterator.PrintMenu - 돈까스
+02:22:21.101 [main] INFO iterator.PrintMenu - 생선까스
+02:22:21.101 [main] INFO iterator.PrintMenu - 비프까스
 
 Process finished with exit code 0
 ~~~
-
-다음과 같은 결과화면을 볼 수 있다.
