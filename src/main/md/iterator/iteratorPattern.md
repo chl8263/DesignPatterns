@@ -246,3 +246,12 @@ Lunch 메뉴에 대해서 앞으로 printLunch() 의 Iterator 만 사용하여 �
 
 Process finished with exit code 0
 ~~~
+
+
+![base](/src/main/md/iterator/img/iterator1.PNG)
+
+
+
+__이터레이터 패턴을 사용하면 내부적인 구현방법을 외부로 노툴시키지 않으면서도 집합체에 있는 모든 항목에 일일이 접근할 수 있다.__
+
+__또한 각 항목에 일일이 접근할 수 있게 해주는 기능을 집합체가아닌 반복자 객체에서 책임지게 된다는 것도 장점으로 작용한다.__
