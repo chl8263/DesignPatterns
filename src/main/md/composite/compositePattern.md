@@ -11,4 +11,5 @@ composite pattern은 위의 정의와 같이 단일, 복합 객체 전부같은 
 
 파일은 디렉토리 안에 들어갈 수 있고 디렉토리 또한 다른어떤 디렉토리 안에 들어갈 수 있다.
 
+![base](/src/main/md/composite/img/composite1.PNG)
 
