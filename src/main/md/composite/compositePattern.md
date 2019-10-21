@@ -13,3 +13,22 @@ composite pattern은 위의 정의와 같이 단일, 복합 객체 전부같은 
 
 ![base](/src/main/md/composite/img/composite1.PNG)
 
+그렇다면 디렉토리와 파일을 어떻게 같은 구조로 할 수 있을까?
+
+여태까지 디자인패턴에서 다형을 강조하며 매번 사용한 interface 또는 abstract를 이용할 수 있다.
+
+나는 abstract를 이용하여 상속 구조로 구현할 것이고 디렉토리와 파일 모두 이름을 가지기 때문에
+공통 맴버로써 Name을 받는다.
+~~~java
+abstract class Component{
+    private String name ;
+    
+    public String getName(){
+        return this.name;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+}
+~~~
