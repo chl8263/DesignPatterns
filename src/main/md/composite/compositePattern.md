@@ -22,13 +22,60 @@ composite pattern은 위의 정의와 같이 단일, 복합 객체 전부같은 
 ~~~java
 abstract class Component{
     private String name ;
-    
+
+    public Component(String name){
+        this.name = name;
+    }
     public String getName(){
         return this.name;
     }
-    
+
     public void setName(String name){
         this.name = name;
     }
 }
 ~~~
+
+그리고 File 클래스를 만들었다.
+
+~~~java
+class File extends Component{
+
+    public File(String name) {
+        super(name);
+    }
+}
+~~~
+
+directory 클래스는 하위 component들을 가지고 있을 수 있도록 ArrayList에 저장하고
+component들을 add , remove하는 기능을 가지고 있다.
+~~~java
+class directory extends Component{
+
+    private ArrayList<Component> components = new ArrayList<>();
+
+    public directory(String name) {
+        super(name);
+    }
+
+    public boolean isComponent(){
+        if(components.size() >0) return true;
+        return false;
+    }
+
+    public void addComponent(Component component){
+        components.add(component);
+    }
+
+    public boolean removeComponent(Component component){
+        return components.remove(component);
+    }
+}
+~~~
+
+
+
+
+
+
+
