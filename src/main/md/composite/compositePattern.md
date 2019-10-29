@@ -73,7 +73,19 @@ class directory extends Component{
 }
 ~~~
 
+자 이제 Directory 와 File 들을 생성하고 Directory 에 component 들을 넣어 보겠다.
+~~~java
+Directory root = new Directory("root");
+Directory home = new Directory("home");
+Directory music = new Directory("music");
+Directory picture = new Directory("picture");
 
+File track1 = new File("track1");
+File track2 = new File("track2");
+File track3 = new File("track3");
+File doc1 = new File("doc1");
+File doc2 = new File("doc2");
+~~~
 
 
 
