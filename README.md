@@ -24,17 +24,10 @@
 
 [10. Iterator pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/iterator/iteratorPattern.md)
 
-[11. composite pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/composite/compositePattern.md)
+[11. Composite pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/composite/compositePattern.md)
 
+[12. State pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/state/statePattern.md)
 
+[13. Proxy pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/proxy/proxyPattern.md)
 
-11. 스테이트 패턴
-
-12. 프록시 패턴
-
-13. 컴파운드 패턴
-
-
-
-
-
+[14. Compound pattern](https://github.com/chl8263/DesignPatterns/blob/master/src/main/md/compound/compoundPattern.md)
