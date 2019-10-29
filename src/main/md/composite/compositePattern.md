@@ -85,9 +85,42 @@ File track2 = new File("track2");
 File track3 = new File("track3");
 File doc1 = new File("doc1");
 File doc2 = new File("doc2");
+
+root.addComponent(track1);
+
+home.addComponent(track2);
+home.addComponent(music);
+
+music.addComponent(doc1);
+music.addComponent(doc2);
+
+picture.addComponent(track3);
+
+root.addComponent(picture);
+root.addComponent(home);
+
+show(root);
 ~~~
 
-
-
-
+~~~
+root
+=============
+track1
+=============
+picture
+=============
+track3
+=============
+home
+=============
+track2
+=============
+music
+=============
+doc1
+=============
+doc2
+=============
+~~~
+결과값 또한 잘 나온것을 알 수 있다.
 
